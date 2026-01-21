@@ -1,7 +1,5 @@
 /* Hide scrollbar for Chrome, Safari and Opera */
 
-
-
 body {
     display: flex;
     margin: 0;
@@ -11,21 +9,27 @@ body {
     overflow-x: hidden;
 }
 
-h1 {
-    font-weight: 300;
-    font-size: 24px;
-    margin: 0;
-}
-
-button {
-    background-color: rgba(255, 255, 255, 0);
-    border: 1px solid black;
-    padding: 10px 20px;
-    border-radius: 50px;
-    font-size: 16px;
-}
-
 /* index page styles*/
+
+.scroll-cue {
+    position: fixed;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    text-align: center;
+    text-decoration: underline;
+    z-index: 2;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.scroll-cue.hidden {
+    opacity: 0;
+}
 
 .index-text {
     position: fixed;
@@ -57,81 +61,6 @@ button {
     opacity: 0.7;
 }
 
-/* projects page styles*/
-
-.column-1, .column-2 {
-    display: flex;
-    flex-direction: column;
-}
-
-.column-1 {
-    background-color: rgb(111, 231, 84);
-    width: 30%;
-    height: 100%;
-    overflow-y: hidden;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 20px 0;
-}
-
-.column-2 {
-    background-color: rgb(235, 235, 255);
-    width: 70%;
-    height: 100%;   
-}
-
-.header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
-}
-
-.projects-list {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 40px;
-    overflow-y: auto;
-    width: 100%;
-    padding: 12px;
-    padding-bottom: 40px;
-    box-sizing: border-box;
-    margin: 0;
-    justify-items: start;
-}
-
-.project {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    align-items: flex-start;
-    width: fit-content;
-}
-
-.project img {
-    width: auto;
-    max-width: 100%;
-    max-height: 400px;
-    object-fit: contain;
-    padding-bottom: 6px;
-    display: block;
-}
-
-.project h1 {
-    font-size: 16px;
-    font-weight: 400;
-    margin: 0;
-}
-
-.project p {
-    font-size: 16px;
-    font-weight: 300;
-    margin: 0;
-    line-height: 1.2;
-}
-
 /* Base slideshow styles */
 .slideshow {
     width: 100%;
@@ -154,83 +83,86 @@ button {
     opacity: 1;
 }
 
-/* Projects hover slideshow container */
-.projects-hover-container {
+/* Branding slideshow container */
+.branding-hover-container {
     position: fixed;
-    top: 50%;
-    left: 35%;
+    top: 18%;
+    right: 45%;
+    transform: translate(50%, -50%);
+    width: 12%;
+    max-width: 180px;
+    height: 12vh;
+    display: none;
+    z-index: 0;
+}
+
+.branding-hover-container.active {
+    display: block;
+}
+
+/* Websites slideshow container */
+.websites-hover-container {
+    position: fixed;
+    top: 65%;
+    left: 12%;
     transform: translate(-50%, -50%);
-    width: 30%;
-    max-width: 400px;
-    height: 30vh;
+    width: 22%;
+    max-width: 300px;
+    height: 22vh;
     display: none;
-    z-index: 1000;
+    z-index: 0;
 }
 
-.projects-hover-container.active {
+.websites-hover-container.active {
     display: block;
 }
 
-/* Instagram hover slideshow container */
-.instagram-hover-container {
+/* Pottery chairs slideshow container */
+.pottery-hover-container {
     position: fixed;
-    pointer-events: none;
-    z-index: 1000;
+    top: 60%;
+    right: 10%;
+    transform: translate(50%, -50%);
+    width: 16%;
+    max-width: 220px;
+    height: 16vh;
     display: none;
+    z-index: 0;
 }
 
-.instagram-hover-container.active {
+.pottery-hover-container.active {
     display: block;
 }
 
-.instagram-preview {
-    width: 200px;
-    height: auto;
-    object-fit: contain;
+/* Motion graphics single image container */
+.motion-container {
     position: fixed;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-}
-
-.instagram-hover-container.active .instagram-preview {
-    opacity: 1;
-}
-
-/* Riso animation container */
-.riso-container {
-    position: fixed;
-    top: 15%;
-    right: 15%;
-    width: 30%;
-    max-width: 400px;
-    height: 30vh;
+    top: 25%;
+    left: 8%;
+    width: 22%;
+    max-width: 300px;
+    height: 22vh;
     display: none;
-    z-index: 1000;
+    z-index: 0;
 }
 
-.riso-container.active {
+.motion-container.active {
     display: block;
 }
 
-/* Project slideshow specific styles */
-.project-slideshow {
-    composes: slideshow;
-}
-
-.single-image-container {
+/* Mixed media animation container */
+.mixedmedia-container {
     position: fixed;
-    top: 15%;
-    right: 15%;
-    width: 30%;
-    max-width: 400px;
-    height: 30vh;
+    top: 30%;
+    right: 8%;
+    width: 22%;
+    max-width: 300px;
+    height: 22vh;
     display: none;
-    z-index: 1000;
+    z-index: 0;
 }
 
-.single-image-container.active {
+.mixedmedia-container.active {
     display: block;
 }
 
@@ -261,8 +193,8 @@ button {
 
 .color-block {
     position: absolute;
-    width: 7px;
-    height: 7px;
+    width: 14px;
+    height: 18px;
 }
 
 .auto-scroll-btn {
@@ -290,5 +222,135 @@ button {
 @keyframes spin {
     100% {
         transform: rotate(360deg);
+    }
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+    .index-text p {
+        width: 85%;
+        font-size: 19px;
+        line-height: 1.6;
+        padding: 0 35px;
+    }
+
+    .scroll-cue {
+        font-size: 12px;
+        top: 30px;
+    }
+
+    .auto-scroll-btn {
+        top: 15px;
+        right: 15px;
+        padding: 8px;
+    }
+
+    .sun-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .branding-hover-container {
+        width: 35%;
+        max-width: 150px;
+        height: 15vh;
+        top: 20%;
+        right: 15%;
+        left: auto;
+        transform: translate(50%, -50%);
+    }
+
+    .websites-hover-container {
+        width: 40%;
+        max-width: 180px;
+        height: 18vh;
+        top: 65%;
+        left: 10%;
+        right: auto;
+        transform: translate(-50%, -50%);
+    }
+
+    .pottery-hover-container {
+        width: 35%;
+        max-width: 150px;
+        height: 15vh;
+        top: 70%;
+        right: 8%;
+        left: auto;
+        transform: translate(50%, -50%);
+    }
+
+    .motion-container {
+        width: 40%;
+        max-width: 180px;
+        height: 18vh;
+        top: 25%;
+        left: 8%;
+        right: auto;
+        transform: translate(-50%, -50%);
+    }
+
+    .mixedmedia-container {
+        width: 40%;
+        max-width: 180px;
+        height: 18vh;
+        top: 40%;
+        right: 10%;
+        left: auto;
+        transform: translate(50%, -50%);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .index-text p {
+        width: 90%;
+        font-size: 18px;
+        padding: 0 30px;
+    }
+
+    .scroll-cue {
+        font-size: 11px;
+        top: 25px;
+    }
+
+    .auto-scroll-btn {
+        top: 12px;
+        right: 12px;
+        padding: 6px;
+    }
+
+    .sun-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .branding-hover-container {
+        width: 32%;
+        max-width: 130px;
+        height: 12vh;
+    }
+
+    .websites-hover-container {
+        width: 38%;
+        max-width: 160px;
+        height: 15vh;
+    }
+
+    .pottery-hover-container {
+        width: 32%;
+        max-width: 130px;
+        height: 12vh;
+    }
+
+    .motion-container {
+        width: 38%;
+        max-width: 160px;
+        height: 15vh;
+    }
+
+    .mixedmedia-container {
+        width: 38%;
+        max-width: 160px;
+        height: 15vh;
     }
 }
