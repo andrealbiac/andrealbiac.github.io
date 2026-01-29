@@ -42,6 +42,7 @@ class BackgroundManager {
         // Pick a random color from the palette as the initial background
         const randomInitialColor = colors[Math.floor(Math.random() * colors.length)];
         this.backgroundContainer.style.backgroundColor = randomInitialColor;
+        document.documentElement.style.setProperty('--page-bg-color', randomInitialColor);
         this.blocks = [];
         // Fewer blocks so they appear more spaced vertically
         this.maxBlocks = 12;
@@ -164,6 +165,7 @@ class BackgroundManager {
         if (currentScrollY <= 0) {
             this.backgroundContainer.style.backgroundColor = this.originalBackgroundColor;
             this.currentBackgroundColor = this.originalBackgroundColor;
+            document.documentElement.style.setProperty('--page-bg-color', this.originalBackgroundColor);
         }
         
         // Sort blocks by y position to ensure we process them in order
@@ -221,6 +223,7 @@ class BackgroundManager {
         if (block.y <= 0 && block.y > -100 && block.color !== this.currentBackgroundColor) {
             this.backgroundContainer.style.backgroundColor = block.color;
             this.currentBackgroundColor = block.color;
+            document.documentElement.style.setProperty('--page-bg-color', block.color);
         }
     }
 }
