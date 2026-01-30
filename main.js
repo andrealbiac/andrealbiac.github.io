@@ -1,144 +1,162 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Helper functions
-    function showSlide(slides, index) {
-        slides.forEach(slide => slide.classList.remove('active'));
-        slides[index].classList.add('active');
+    const categoryColors = {
+        branding: '#BD9EFF',
+        web: '#FF9D47',
+        motion: '#FB7CA6',
+        mixedmedia: '#9ACBFF',
+        pottery: '#A4754C'
+    };
+
+    // Get all category links
+    const categoryLinks = document.querySelectorAll('.category-link');
+    const indexText = document.querySelector('.index-text');
+    const galleryModal = document.getElementById('gallery-modal');
+    const nameHighlights = document.querySelectorAll('.name-highlight');
+    const scrollCue = document.querySelector('.scroll-cue');
+    let backgroundManager = null;
+    let hoveredCategory = null;
+
+    // Hide scroll cue after 6 seconds
+    if (scrollCue) {
+        setTimeout(() => {
+            scrollCue.classList.add('hidden');
+        }, 6000);
     }
 
-    function nextSlide(slides, currentIndex) {
-        return (currentIndex + 1) % slides.length;
-    }
+    // Wrap each letter in name highlights with spans for animation (only 'graphic designer')
+    nameHighlights.forEach(highlight => {
+        const text = highlight.textContent;
+        highlight.textContent = '';
+        text.split('').forEach((char, index) => {
+            const span = document.createElement('span');
+            span.textContent = char === ' ' ? '\u00A0' : char;
+            span.style.animationDelay = `${index * 0.05}s`;
+            highlight.appendChild(span);
+        });
+    });
 
-    // Detect if device supports touch
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-    // Helper function to create slideshow handler
-    function createSlideshowHandler(triggerClass, containerClass, slideInterval = 2500, hideDelay = 10000) {
-        const trigger = document.querySelector(`.${triggerClass}`);
-        const container = document.querySelector(`.${containerClass}`);
-        const slides = document.querySelectorAll(`.${containerClass} .slide`);
-        let currentSlide = 0;
-        let interval;
-        let hideTimeout;
-
-        if (trigger && slides.length > 0) {
-            slides[0].classList.add('active');
-
-            const startSlideshow = () => {
-                if (!interval) {
-                    interval = setInterval(() => {
-                        currentSlide = nextSlide(slides, currentSlide);
-                        showSlide(slides, currentSlide);
-                    }, slideInterval);
-                }
-                container.classList.add('active');
-            };
-
-            const stopSlideshow = () => {
-                hideTimeout = setTimeout(() => {
-                    container.classList.remove('active');
-                    clearInterval(interval);
-                    interval = null;
-                }, hideDelay);
-            };
-
-            // Prevent navigation (only show slideshow)
-            trigger.addEventListener('click', (e) => {
-                e.preventDefault();
-            });
-
-            if (isTouchDevice) {
-                trigger.addEventListener('touchstart', (e) => {
-                    if (!container.classList.contains('active')) {
-                        startSlideshow();
-                        stopSlideshow();
-                    } else {
-                        container.classList.remove('active');
-                        clearInterval(interval);
-                        interval = null;
-                        clearTimeout(hideTimeout);
-                    }
-                });
-            } else {
-                trigger.addEventListener('mouseenter', startSlideshow);
-                trigger.addEventListener('mouseleave', stopSlideshow);
-
-                container.addEventListener('mouseenter', () => {
-                    clearTimeout(hideTimeout);
-                });
-
-                container.addEventListener('mouseleave', stopSlideshow);
-            }
-        }
-    }
-
-    // Helper function to create single image handler
-    function createSingleImageHandler(triggerClass, containerClass) {
-        const trigger = document.querySelector(`.${triggerClass}`);
-        const container = document.querySelector(`.${containerClass}`);
-        let hideTimeout;
-
-        if (trigger && container) {
-            const show = () => {
-                clearTimeout(hideTimeout);
-                container.classList.add('active');
-            };
-
-            const hide = () => {
-                hideTimeout = setTimeout(() => {
-                    container.classList.remove('active');
-                }, 10000);
-            };
-
-            // Prevent navigation (only show image)
-            trigger.addEventListener('click', (e) => {
-                e.preventDefault();
-            });
-
-            if (isTouchDevice) {
-                trigger.addEventListener('touchstart', (e) => {
-                    if (!container.classList.contains('active')) {
-                        show();
-                        hide();
-                    } else {
-                        container.classList.remove('active');
-                        clearTimeout(hideTimeout);
-                    }
-                });
-            } else {
-                trigger.addEventListener('mouseenter', show);
-                trigger.addEventListener('mouseleave', hide);
-
-                container.addEventListener('mouseenter', () => {
-                    clearTimeout(hideTimeout);
-                });
-
-                container.addEventListener('mouseleave', hide);
-            }
-        }
-    }
-
-    // Initialize all hover effects
-    createSlideshowHandler('branding-trigger', 'branding-hover-container');
-    createSlideshowHandler('websites-trigger', 'websites-hover-container');
-    createSlideshowHandler('motion-trigger', 'motion-container', 4000, 15000); // Longer timing for motion graphics
-    createSlideshowHandler('pottery-trigger', 'pottery-hover-container', 800, 10000); // Even faster timing for chairs
-    createSingleImageHandler('mixedmedia-trigger', 'mixedmedia-container');
-
-    // Project page slideshow click functionality
-    const projectSlideshows = document.querySelectorAll('.project .slideshow');
+    // Name hover image (id.png follows mouse when hovering "Andrea Albiac")
+    const nameHoverImage = document.getElementById('name-hover-image');
+    const nameStatic = document.querySelector('.name-highlight-static');
     
-    projectSlideshows.forEach(slideshow => {
-        const slides = slideshow.querySelectorAll('.slide');
-        let currentSlide = 0;
+    if (nameHoverImage && nameStatic) {
+        nameStatic.addEventListener('mouseenter', () => {
+            nameHoverImage.classList.add('visible');
+        });
+        
+        nameStatic.addEventListener('mouseleave', () => {
+            nameHoverImage.classList.remove('visible');
+        });
+        
+        nameStatic.addEventListener('mousemove', (e) => {
+            nameHoverImage.style.left = `${e.clientX + 15}px`;
+            nameHoverImage.style.top = `${e.clientY + 15}px`;
+        });
+    }
 
-        if (slides.length > 0) {
-            slides[0].classList.add('active');
+    // Wait for BackgroundManager to be initialized
+    window.addEventListener('load', () => {
+        // Get reference to background manager from global scope
+        setTimeout(() => {
+            const bgContainer = document.getElementById('background-container');
+            if (bgContainer && bgContainer.backgroundManager) {
+                backgroundManager = bgContainer.backgroundManager;
+            }
+        }, 100);
+    });
 
-            slideshow.addEventListener('click', () => {
-                currentSlide = nextSlide(slides, currentSlide);
-                showSlide(slides, currentSlide);
+    // Handle category link hover and click
+    categoryLinks.forEach(link => {
+        const category = link.getAttribute('data-category');
+        const color = categoryColors[category];
+
+        link.addEventListener('mouseenter', () => {
+            hoveredCategory = category;
+            // Add color to the hovered link
+            link.style.color = color;
+            
+            // Dim other text (not category links)
+            indexText.classList.add('text-dimmed');
+            
+            // Dispatch event to show all particles of this category
+            document.dispatchEvent(new CustomEvent('categoryHoverStart', { 
+                detail: { category } 
+            }));
+        });
+
+        link.addEventListener('mouseleave', () => {
+            if (hoveredCategory === category) {
+                hoveredCategory = null;
+                link.style.color = '';
+                indexText.classList.remove('text-dimmed');
+                
+                // Dispatch event to hide category particles
+                document.dispatchEvent(new CustomEvent('categoryHoverEnd'));
+            }
+        });
+
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Set background color immediately to full category color
+            const bgContainer = document.getElementById('background-container');
+            gsap.to(bgContainer, {
+                backgroundColor: color,
+                duration: 0.4,
+                ease: 'power2.out'
             });
+            
+            // Open gallery
+            openGallery(category);
+        });
+    });
+
+    // Gallery functions
+    function openGallery(category) {
+        if (backgroundManager && backgroundManager.openGallery) {
+            backgroundManager.openGallery(category);
         }
+    }
+
+    function closeGallery() {
+        if (backgroundManager && backgroundManager.closeGallery) {
+            backgroundManager.closeGallery();
+        }
+    }
+
+    // Close gallery on overlay click
+    if (galleryModal) {
+        galleryModal.addEventListener('click', (e) => {
+            if (e.target === galleryModal || e.target.classList.contains('gallery-overlay')) {
+                closeGallery();
+            }
+        });
+    }
+
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && galleryModal && galleryModal.style.display === 'flex') {
+            closeGallery();
+        }
+    });
+
+    // Listen for particle hover events to highlight category
+    document.addEventListener('highlightCategory', (e) => {
+        const category = e.detail.category;
+        categoryLinks.forEach(link => {
+            if (link.getAttribute('data-category') === category) {
+                link.classList.add('highlighted');
+                link.style.color = categoryColors[category];
+            }
+        });
+        indexText.classList.add('text-dimmed');
+    });
+
+    document.addEventListener('unhighlightCategory', () => {
+        categoryLinks.forEach(link => {
+            link.classList.remove('highlighted');
+            link.style.color = '';
+        });
+        indexText.classList.remove('text-dimmed');
     });
 });

@@ -1,7 +1,11 @@
-/* Hide scrollbar for Chrome, Safari and Opera */
-
-:root {
-    --page-bg-color: #f5f5f5;
+/* Hide scrollbar, keep scroll */
+html {
+    overflow-y: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+html::-webkit-scrollbar {
+    display: none;
 }
 
 body {
@@ -26,12 +30,23 @@ body {
     text-align: center;
     z-index: 2;
     opacity: 1;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.5s ease;
     pointer-events: none;
 }
 
 .scroll-cue.hidden {
     opacity: 0;
+}
+
+.space-key {
+    display: inline-block;
+    background: #000;
+    color: #E8E4DC;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 400;
+    margin: 0 2px;
 }
 
 .index-text {
@@ -44,6 +59,12 @@ body {
     width: 100%;
     height: 100vh;
     background-color: transparent;
+    pointer-events: none;
+}
+
+.index-text p,
+.index-text a {
+    pointer-events: auto;
 }
 
 .index-text p {
@@ -54,16 +75,68 @@ body {
     font-weight: 300;
 }
 
+.index-text .dim-text {
+    transition: opacity 0.3s ease;
+}
+
+.index-text.text-dimmed .dim-text {
+    opacity: 0.4;
+}
+
+.index-text p .name-highlight,
+.index-text p .name-highlight-static {
+    font-weight: 500;
+    display: inline-block;
+}
+
+.index-text p .name-highlight span {
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
+
+.index-text p:hover .name-highlight span {
+    animation: letterJump 0.5s ease;
+}
+
 .index-text p a {
     color: inherit;
     text-decoration: none;
     border-bottom: 1px solid currentColor;
-    transition: opacity 0.2s ease;
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ctext x='2' y='30' font-size='28'%3E%F0%9F%91%80%3C/text%3E%3C/svg%3E") 18 18, pointer;
+    transition: color 0.3s ease, opacity 0.3s ease;
+    cursor: pointer;
+    position: relative;
 }
 
-.index-text p a:hover {
-    opacity: 0.7;
+.index-text p a[target="_blank"] {
+    border-bottom: none;
+}
+
+.index-text p a.category-link[data-category="branding"] {
+    --category-color: #BD9EFF;
+}
+
+.index-text p a.category-link[data-category="web"] {
+    --category-color: #FF9D47;
+}
+
+.index-text p a.category-link[data-category="motion"] {
+    --category-color: #FB7CA6;
+}
+
+.index-text p a.category-link[data-category="mixedmedia"] {
+    --category-color: #9ACBFF;
+}
+
+.index-text p a.category-link[data-category="pottery"] {
+    --category-color: #A4754C;
+}
+
+.index-text p a.category-link:hover {
+    color: var(--category-color);
+}
+
+.index-text p a.category-link.highlighted {
+    color: var(--category-color);
 }
 
 .bottom-bar {
@@ -74,7 +147,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1.25rem;
+    gap: 0;
     z-index: 2;
 }
 
@@ -82,6 +155,18 @@ body {
     font-family: 'Inter', sans-serif;
     font-size: 15px;
     font-weight: 300;
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: opacity 0.7s ease, max-width 0.7s ease, margin 0.7s ease;
+    margin-right: 0;
+}
+
+.bottom-bar:hover .portfolio-note {
+    opacity: 1;
+    max-width: 300px;
+    margin-right: 1.25rem;
 }
 
 .get-in-touch-btn {
@@ -89,131 +174,147 @@ body {
     font-family: 'Inter', sans-serif;
     font-size: 14px;
     font-weight: 300;
-    color: var(--page-bg-color);
+    color: #E8E4DC;
     background-color: #000;
     border: none;
     border-radius: 999px;
     text-decoration: none;
     z-index: 2;
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ctext x='2' y='30' font-size='28'%3E%E2%9C%8D%F0%9F%8F%BB%3C/text%3E%3C/svg%3E") 18 18, pointer;
-    transition: opacity 0.2s ease, transform 0.25s ease;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .get-in-touch-btn:hover {
-    opacity: 0.9;
-    transform: scale(1.08);
+    transform: scale(1.05);
 }
 
-/* Base slideshow styles */
-.slideshow {
+/* Name hover image */
+.name-hover-image {
+    position: fixed;
+    width: 80px;
+    height: auto;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 100;
+    transition: opacity 0.15s ease;
+}
+
+.name-hover-image.visible {
+    opacity: 1;
+}
+
+/* Gallery Modal - Apple-style horizontal carousel */
+.gallery-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 400px;
-    position: relative;
-    overflow: hidden;
+    height: 100%;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
 }
 
-.slideshow .slide {
+.gallery-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    opacity: 0;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    background: rgba(255, 255, 255, 0.05);
 }
 
-.slideshow .slide.active {
+.gallery-content {
+    position: relative;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.gallery-carousel {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.gallery-carousel-track {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    cursor: grab;
+    will-change: transform;
+}
+
+.gallery-carousel-track:active {
+    cursor: grabbing;
+}
+
+.gallery-carousel-item {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: default;
+}
+
+.gallery-carousel-item .carousel-image-wrap {
+    position: relative;
+    max-width: 280px;
+    max-height: 50vh;
+    transform: scale(0.75);
+    opacity: 0.7;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+    will-change: transform, opacity;
+}
+
+.gallery-carousel-item.centered .carousel-image-wrap {
+    max-width: 420px;
+    max-height: 65vh;
+    transform: scale(1);
     opacity: 1;
 }
 
-/* Branding slideshow container */
-.branding-hover-container {
-    position: fixed;
-    top: 18%;
-    right: 45%;
-    transform: translate(50%, -50%);
-    width: 12%;
-    max-width: 180px;
-    height: 12vh;
-    display: none;
-    z-index: 0;
-}
-
-.branding-hover-container.active {
-    display: block;
-}
-
-/* Websites slideshow container */
-.websites-hover-container {
-    position: fixed;
-    top: 65%;
-    left: 12%;
-    transform: translate(-50%, -50%);
-    width: 22%;
-    max-width: 300px;
-    height: 22vh;
-    display: none;
-    z-index: 0;
-}
-
-.websites-hover-container.active {
-    display: block;
-}
-
-/* Pottery chairs slideshow container */
-.pottery-hover-container {
-    position: fixed;
-    top: 60%;
-    right: 10%;
-    transform: translate(50%, -50%);
-    width: 16%;
-    max-width: 220px;
-    height: 16vh;
-    display: none;
-    z-index: 0;
-}
-
-.pottery-hover-container.active {
-    display: block;
-}
-
-/* Motion graphics single image container */
-.motion-container {
-    position: fixed;
-    top: 25%;
-    left: 8%;
-    width: 22%;
-    max-width: 300px;
-    height: 22vh;
-    display: none;
-    z-index: 0;
-}
-
-.motion-container.active {
-    display: block;
-}
-
-/* Mixed media animation container */
-.mixedmedia-container {
-    position: fixed;
-    top: 30%;
-    right: 8%;
-    width: 22%;
-    max-width: 300px;
-    height: 22vh;
-    display: none;
-    z-index: 0;
-}
-
-.mixedmedia-container.active {
-    display: block;
-}
-
-.single-image {
+.gallery-carousel-item .carousel-image-wrap img {
     width: 100%;
-    height: 100%;
+    height: auto;
+    max-height: 50vh;
     object-fit: contain;
+    display: block;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
 }
+
+.gallery-carousel-item.centered .carousel-image-wrap img {
+    max-height: 65vh;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.carousel-label {
+    margin-top: 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: #000;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.gallery-carousel-item.centered .carousel-label {
+    opacity: 1;
+    visibility: visible;
+}
+
 
 #background-container {
     position: fixed;
@@ -221,9 +322,58 @@ body {
     left: 0;
     width: 100%;
     height: 100vh;
-    z-index: -1;
+    z-index: 0;
     overflow: hidden;
-    background-color: #f5f5f5;
+    background-color: #E8E4DC;
+}
+
+/* Particle hover overlays container */
+#particle-overlays-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* Particle hover overlay for animated GIFs */
+.particle-hover-overlay {
+    position: absolute;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-origin: center center;
+}
+
+.particle-hover-image {
+    max-width: 250px;
+    max-height: 250px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 0;
+}
+
+.particle-hover-label {
+    margin-top: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    color: #000;
+    text-align: center;
+    min-height: 14px;
+}
+
+.background-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
 }
 
 #scrollable-container {
@@ -232,12 +382,7 @@ body {
     left: 0;
     width: 100%;
     height: 100vh;
-}
-
-.color-block {
-    position: absolute;
-    width: 14px;
-    height: 18px;
+    pointer-events: none;
 }
 
 .auto-scroll-btn {
@@ -246,14 +391,10 @@ body {
     right: 20px;
     background: none;
     border: none;
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ctext x='2' y='30' font-size='28'%3E%F0%9F%A4%B8%F0%9F%8F%BB%3C/text%3E%3C/svg%3E") 18 18, pointer;
+    cursor: default;
     z-index: 1000;
     padding: 10px;
-    transition: transform 0.25s ease;
-}
-
-.auto-scroll-btn:hover {
-    transform: scale(1.12);
+    pointer-events: none;
 }
 
 .sun-icon {
@@ -261,16 +402,20 @@ body {
     height: 48px;
     transform-origin: center;
     will-change: transform;
-    transition: transform 0.25s ease;
 }
 
-.auto-scroll-btn.active .sun-icon {
-    animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-    100% {
-        transform: rotate(360deg);
+@keyframes letterJump {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-8px);
+    }
+    50% {
+        transform: translateY(0);
+    }
+    70% {
+        transform: translateY(-4px);
     }
 }
 
@@ -312,54 +457,12 @@ body {
         height: 36px;
     }
 
-    .branding-hover-container {
-        width: 35%;
-        max-width: 150px;
-        height: 15vh;
-        top: 20%;
-        right: 15%;
-        left: auto;
-        transform: translate(50%, -50%);
+    .gallery-carousel-item .carousel-image-wrap {
+        max-width: 200px;
     }
 
-    .websites-hover-container {
-        width: 40%;
-        max-width: 180px;
-        height: 18vh;
-        top: 65%;
-        left: 10%;
-        right: auto;
-        transform: translate(-50%, -50%);
-    }
-
-    .pottery-hover-container {
-        width: 35%;
-        max-width: 150px;
-        height: 15vh;
-        top: 70%;
-        right: 8%;
-        left: auto;
-        transform: translate(50%, -50%);
-    }
-
-    .motion-container {
-        width: 40%;
-        max-width: 180px;
-        height: 18vh;
-        top: 25%;
-        left: 8%;
-        right: auto;
-        transform: translate(-50%, -50%);
-    }
-
-    .mixedmedia-container {
-        width: 40%;
-        max-width: 180px;
-        height: 18vh;
-        top: 40%;
-        right: 10%;
-        left: auto;
-        transform: translate(50%, -50%);
+    .gallery-carousel-item.centered .carousel-image-wrap {
+        max-width: 280px;
     }
 }
 
@@ -399,33 +502,15 @@ body {
         height: 32px;
     }
 
-    .branding-hover-container {
-        width: 32%;
-        max-width: 130px;
-        height: 12vh;
-    }
-
-    .websites-hover-container {
-        width: 38%;
+    .gallery-carousel-item .carousel-image-wrap {
         max-width: 160px;
-        height: 15vh;
     }
 
-    .pottery-hover-container {
-        width: 32%;
-        max-width: 130px;
-        height: 12vh;
+    .gallery-carousel-item.centered .carousel-image-wrap {
+        max-width: 220px;
     }
 
-    .motion-container {
-        width: 38%;
-        max-width: 160px;
-        height: 15vh;
-    }
-
-    .mixedmedia-container {
-        width: 38%;
-        max-width: 160px;
-        height: 15vh;
+    .carousel-label {
+        font-size: 13px;
     }
 }

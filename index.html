@@ -15,68 +15,33 @@
         <div id="background-container">
             <div id="scrollable-container"></div>
         </div>
+        <!-- Container for particle hover overlays -->
+        <div id="particle-overlays-container"></div>
         <button id="auto-scroll-btn" class="auto-scroll-btn">
             <img src="img/sun.svg" alt="Auto Scroll" class="sun-icon">
         </button>
-        <div class="scroll-cue">Scroll down!</div>
+        <div class="scroll-cue">Press <span class="space-key">space</span> for scroll control</div>
         <div class="index-text">
-            <p>Hey! I'm Andrea Albiac, a graphic designer based in Amsterdam. I make <a href="#" class="branding-trigger">branding</a> and <a href="#" class="websites-trigger">websites</a> for clients and friends, 2D <a href="#" class="motion-trigger">motion graphics</a>, sometimes <a href="#" class="mixedmedia-trigger">mixed media animation</a>. I also make <a href="#" class="pottery-trigger">pottery chairs</a> in my free time -check out my <a href="https://instagram.com/andrea.albiac" target="_blank">Instagram</a> to see more.</p>
+            <p><span class="dim-text">Hey! I'm </span><span class="name-highlight-static dim-text">Andrea Albiac</span><span class="dim-text">, a </span><span class="name-highlight dim-text">graphic designer</span><span class="dim-text"> based in Amsterdam. I make </span><a href="#" class="category-link" data-category="branding">branding</a><span class="dim-text"> and </span><a href="#" class="category-link" data-category="web">websites</a><span class="dim-text"> for clients and friends, 2D </span><a href="#" class="category-link" data-category="motion">motion&nbsp;graphics</a><span class="dim-text">, sometimes </span><a href="#" class="category-link" data-category="mixedmedia">mixed&nbsp;media&nbsp;animation</a><span class="dim-text">. I also make </span><a href="#" class="category-link" data-category="pottery">pottery&nbsp;chairs</a><span class="dim-text"> in my free time -check out my </span><a href="https://instagram.com/andrea.albiac" target="_blank" class="dim-text">Instagram</a><span class="dim-text"> to see more.</span></p>
         </div>
         <div class="bottom-bar">
             <span class="portfolio-note">Extended portfolio under request.</span>
             <a href="mailto:andrealbiac@gmail.com" class="get-in-touch-btn">Get in touch</a>
         </div>
 
-        <!-- Branding slideshow -->
-        <div class="branding-hover-container">
-            <div class="slideshow">
-                <img src="img/brand-1.png" alt="Branding 1" class="slide">
-                <img src="img/brand-2.png" alt="Branding 2" class="slide">
-                <img src="img/brand-3.png" alt="Branding 3" class="slide">
-                <img src="img/brand-4.gif" alt="Branding 4" class="slide">
-            </div>
-        </div>
+        <!-- ID image that follows mouse on name hover -->
+        <img src="img/id.jpeg" alt="" class="name-hover-image" id="name-hover-image">
 
-        <!-- Websites slideshow -->
-        <div class="websites-hover-container">
-            <div class="slideshow">
-                <img src="img/web-1.png" alt="Website 1" class="slide">
-                <img src="img/web-2.png" alt="Website 2" class="slide">
-                <img src="img/web-3.png" alt="Website 3" class="slide">
-                <img src="img/web-4.png" alt="Website 4" class="slide">
-                <img src="img/web-5.png" alt="Website 5" class="slide">
-                <img src="img/web-6.png" alt="Website 6" class="slide">
-                <img src="img/web-7.png" alt="Website 7" class="slide">
-                <img src="img/web-8.png" alt="Website 8" class="slide">
-                <img src="img/web-9.png" alt="Website 9" class="slide">
-            </div>
-        </div>
-
-        <!-- Motion graphics slideshow -->
-        <div class="motion-container">
-            <div class="slideshow">
-                <img src="img/motion-1.gif" alt="Motion 1" class="slide">
-                <img src="img/motion-2.gif" alt="Motion 2" class="slide">
-            </div>
-        </div>
-
-        <!-- Mixed media animation single image -->
-        <div class="mixedmedia-container">
-            <img src="img/sun-1.gif" alt="Mixed Media Animation Preview" class="single-image">
-        </div>
-
-        <!-- Pottery chairs slideshow -->
-        <div class="pottery-hover-container">
-            <div class="slideshow">
-                <img src="img/chair-1.jpeg" alt="Chair 1" class="slide">
-                <img src="img/chair-2.jpeg" alt="Chair 2" class="slide">
-                <img src="img/chair-3.jpeg" alt="Chair 3" class="slide">
-                <img src="img/chair-4.jpeg" alt="Chair 4" class="slide">
-                <img src="img/chair-5.jpeg" alt="Chair 5" class="slide">
-                <img src="img/chair-6.jpeg" alt="Chair 6" class="slide">
+        <!-- Gallery Modal - Apple-style horizontal carousel -->
+        <div id="gallery-modal" class="gallery-modal">
+            <div class="gallery-overlay"></div>
+            <div class="gallery-content">
+                <div class="gallery-carousel"></div>
             </div>
         </div>
     </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
     <script src="main.js"></script>
     <script src="background.js"></script>
 </html>
