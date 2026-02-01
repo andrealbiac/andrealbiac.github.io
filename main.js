@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
         branding: '#BD9EFF',
         web: '#FF9D47',
         motion: '#FB7CA6',
-        mixedmedia: '#9ACBFF',
+        mixedmedia: '#7EB5E8',
         pottery: '#A4754C'
     };
 
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 6000);
     }
 
-    // Subtle wave on 'branding' after 5 seconds to cue hover
+    // Subtle wave on 'branding' after 3 seconds to cue hover
     const brandingLink = document.querySelector('.category-link[data-category="branding"]');
     if (brandingLink) {
         const brandingText = brandingLink.textContent;
@@ -38,15 +38,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const letters = brandingLink.querySelectorAll('.branding-letter');
         setTimeout(() => {
             gsap.to(letters, {
-                y: -4,
-                duration: 0.15,
-                stagger: 0.04,
+                y: -6,
+                duration: 0.18,
+                stagger: { each: 0.06, from: 'start' },
                 ease: 'power2.out',
                 yoyo: true,
-                repeat: 1,
-                repeatDelay: 0.2
+                repeat: 1
             });
-        }, 5000);
+        }, 3000);
     }
 
     // Wrap each letter in name highlights with spans for animation (only 'graphic designer')
@@ -61,12 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Get in touch button: "Contact" by default, "Get in touch" when portfolio note reveals
+    // Email button: "Email" text (portfolio note still reveals on hover)
     const getInTouchBtn = document.querySelector('.get-in-touch-btn');
     const bottomBar = document.querySelector('.bottom-bar');
     if (getInTouchBtn && bottomBar) {
         const defaultText = getInTouchBtn.dataset.defaultText || 'Contact';
-        const hoverText = getInTouchBtn.dataset.hoverText || 'Get in touch';
+        const hoverText = getInTouchBtn.dataset.hoverText || 'Email';
         bottomBar.addEventListener('mouseenter', () => { getInTouchBtn.textContent = hoverText; });
         bottomBar.addEventListener('mouseleave', () => { getInTouchBtn.textContent = defaultText; });
     }

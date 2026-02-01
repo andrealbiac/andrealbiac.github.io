@@ -3,11 +3,11 @@ const categoryColors = {
     branding: '#BD9EFF',    // purple
     web: '#FF9D47',         // orange
     motion: '#FB7CA6',      // pink
-    mixedmedia: '#9ACBFF',  // light blue
+    mixedmedia: '#7EB5E8',  // blue
     pottery: '#A4754C'      // soft brown
 };
 
-const DEFAULT_BG = '#E8E4DC';
+const DEFAULT_BG = '#F9F2E4';
 
 const HALF_W = 7;
 const BLOCK_H = 18;
@@ -96,6 +96,7 @@ class BackgroundManager {
         this.hoveredCategory = null; // Category being hovered in text
         this.peekBlock = null;
         this.peekTimeoutId = null;
+        this.peekCloseTimeoutId = null;
 
         this.setupCanvas();
         this.setupCategoryHoverListeners();
@@ -105,7 +106,8 @@ class BackgroundManager {
 
     scheduleRandomPeek() {
         if (this.peekTimeoutId) clearTimeout(this.peekTimeoutId);
-        const delay = 8000 + Math.random() * 6000;
+        this.peekTimeoutId = null;
+        const delay = 9000 + Math.random() * 2000;
         this.peekTimeoutId = setTimeout(() => this.doRandomPeek(), delay);
     }
 
@@ -128,13 +130,18 @@ class BackgroundManager {
         const block = visible[Math.floor(Math.random() * visible.length)];
         this.peekBlock = block;
         this.showParticleOverlayAnimated(block, 0);
-        setTimeout(() => {
+        const peekCloseId = setTimeout(() => {
             if (this.peekBlock === block && block !== this.hoveredBlock && !this.hoveredCategory) {
-                this.removeOverlayAnimated(block);
+                this.removeOverlay(block, false, () => {
+                    this.peekBlock = null;
+                    this.scheduleRandomPeek();
+                });
+            } else {
+                this.peekBlock = null;
+                this.scheduleRandomPeek();
             }
-            this.peekBlock = null;
-            this.scheduleRandomPeek();
-        }, 2000);
+        }, 3000);
+        this.peekCloseTimeoutId = peekCloseId;
     }
 
     setupCategoryHoverListeners() {
@@ -149,6 +156,7 @@ class BackgroundManager {
             this.hoveredCategory = null;
             this.hideCategoryParticles();
         });
+
     }
 
     createOverlayElement() {
@@ -170,13 +178,14 @@ class BackgroundManager {
         return this.activeOverlays.get(block);
     }
 
-    removeOverlay(block, immediate = false) {
+    removeOverlay(block, immediate = false, onComplete = null) {
         const overlay = this.activeOverlays.get(block);
         if (!overlay) return;
         if (immediate) {
             gsap.killTweensOf(overlay);
             if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
             this.activeOverlays.delete(block);
+            if (onComplete) onComplete();
             return;
         }
         gsap.to(overlay, {
@@ -189,6 +198,7 @@ class BackgroundManager {
             onComplete: () => {
                 if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
                 this.activeOverlays.delete(block);
+                if (onComplete) onComplete();
             }
         });
     }
@@ -451,6 +461,7 @@ class BackgroundManager {
             }
             
             this.hoveredBlock = null;
+            this.scheduleRandomPeek();
         }
     }
 
@@ -785,6 +796,15 @@ class BackgroundManager {
                 this.toggleAutoScroll();
             }
         });
+
+        // Sun button stops/starts scroll when clicked
+        const autoScrollBtn = document.getElementById('auto-scroll-btn');
+        if (autoScrollBtn) {
+            autoScrollBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (!this.activeGallery) this.toggleAutoScroll();
+            });
+        }
 
         // Start with auto-scroll on
         this.isAutoScrolling = true;

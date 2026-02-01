@@ -15,6 +15,7 @@ body {
     font-family: 'Inter', sans-serif;
     position: relative;
     overflow-x: hidden;
+    color: #0E3D09;
 }
 
 /* index page styles*/
@@ -40,8 +41,8 @@ body {
 
 .space-key {
     display: inline-block;
-    background: #000;
-    color: #E8E4DC;
+    background: #0E3D09;
+    color: #F9F2E4;
     padding: 2px 8px;
     border-radius: 4px;
     font-size: 12px;
@@ -124,7 +125,7 @@ body {
 }
 
 .index-text p a.category-link[data-category="mixedmedia"] {
-    --category-color: #9ACBFF;
+    --category-color: #7EB5E8;
 }
 
 .index-text p a.category-link[data-category="pottery"] {
@@ -174,10 +175,11 @@ body {
     font-family: 'Inter', sans-serif;
     font-size: 14px;
     font-weight: 300;
-    color: #000;
+    color: #0E3D09;
     white-space: nowrap;
+    touch-action: manipulation;
     background-color: transparent;
-    border: 1px solid #000;
+    border: 1px solid #0E3D09;
     border-radius: 999px;
     text-decoration: none;
     z-index: 2;
@@ -186,8 +188,8 @@ body {
 }
 
 .get-in-touch-btn:hover {
-    color: #E8E4DC;
-    background-color: #000;
+    color: #F9F2E4;
+    background-color: #0E3D09;
     transform: scale(1.05);
 }
 
@@ -234,7 +236,7 @@ body {
     font-family: 'Inter', sans-serif;
     font-size: 18px;
     font-weight: 500;
-    color: #111;
+    color: #0E3D09;
 }
 
 .gallery-description {
@@ -242,7 +244,7 @@ body {
     font-family: 'Inter', sans-serif;
     font-size: 14px;
     font-weight: 300;
-    color: #444;
+    color: #0E3D09;
     line-height: 1.4;
 }
 
@@ -348,9 +350,9 @@ body {
     font-size: 11px;
     font-weight: 400;
     line-height: 1.2;
-    color: #000;
+    color: #0E3D09;
     background: transparent;
-    border: 1px solid #000;
+    border: 1px solid #0E3D09;
     text-decoration: none;
     cursor: pointer;
     text-align: center;
@@ -364,8 +366,8 @@ body {
 }
 
 .visit-site-btn:hover {
-    color: #E8E4DC;
-    background-color: #000;
+    color: #F9F2E4;
+    background-color: #0E3D09;
     transform: rotate(12deg);
 }
 
@@ -378,7 +380,7 @@ body {
     height: 100vh;
     z-index: 0;
     overflow: hidden;
-    background-color: #E8E4DC;
+    background-color: #F9F2E4;
 }
 
 /* Particle hover overlays container */
@@ -418,7 +420,7 @@ body {
     font-family: 'Inter', sans-serif;
     font-size: 10px;
     font-weight: 400;
-    color: #000;
+    color: #0E3D09;
     text-align: center;
     min-height: 14px;
 }
@@ -447,15 +449,15 @@ body {
     right: 20px;
     background: none;
     border: none;
-    cursor: default;
+    cursor: pointer;
     z-index: 1000;
     padding: 10px;
-    pointer-events: none;
+    pointer-events: auto;
 }
 
 .sun-icon {
-    width: 48px;
-    height: 48px;
+    width: 60px;
+    height: 60px;
     transform-origin: center;
     will-change: transform;
 }
@@ -509,8 +511,8 @@ body {
     }
 
     .sun-icon {
-        width: 36px;
-        height: 36px;
+        width: 48px;
+        height: 48px;
     }
 
     .gallery-body {
@@ -632,8 +634,8 @@ body.gallery-open .scroll-cue {
     }
 
     .sun-icon {
-        width: 32px;
-        height: 32px;
+        width: 40px;
+        height: 40px;
     }
 
     .gallery-thumb img {
