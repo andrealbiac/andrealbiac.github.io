@@ -15,7 +15,7 @@ body {
     font-family: 'Inter', sans-serif;
     position: relative;
     overflow-x: hidden;
-    color: #0E3D09;
+    color: #2D1810;
 }
 
 /* index page styles*/
@@ -41,7 +41,7 @@ body {
 
 .space-key {
     display: inline-block;
-    background: #0E3D09;
+    background: #2D1810;
     color: #F9F2E4;
     padding: 2px 8px;
     border-radius: 4px;
@@ -175,11 +175,11 @@ body {
     font-family: 'Inter', sans-serif;
     font-size: 14px;
     font-weight: 300;
-    color: #0E3D09;
+    color: #2D1810;
     white-space: nowrap;
     touch-action: manipulation;
     background-color: transparent;
-    border: 1px solid #0E3D09;
+    border: 1px solid #2D1810;
     border-radius: 999px;
     text-decoration: none;
     z-index: 2;
@@ -189,7 +189,7 @@ body {
 
 .get-in-touch-btn:hover {
     color: #F9F2E4;
-    background-color: #0E3D09;
+    background-color: #2D1810;
     transform: scale(1.05);
 }
 
@@ -236,7 +236,7 @@ body {
     font-family: 'Inter', sans-serif;
     font-size: 18px;
     font-weight: 500;
-    color: #0E3D09;
+    color: #2D1810;
 }
 
 .gallery-description {
@@ -244,7 +244,7 @@ body {
     font-family: 'Inter', sans-serif;
     font-size: 14px;
     font-weight: 300;
-    color: #0E3D09;
+    color: #2D1810;
     line-height: 1.4;
 }
 
@@ -350,9 +350,9 @@ body {
     font-size: 11px;
     font-weight: 400;
     line-height: 1.2;
-    color: #0E3D09;
+    color: #2D1810;
     background: transparent;
-    border: 1px solid #0E3D09;
+    border: 1px solid #2D1810;
     text-decoration: none;
     cursor: pointer;
     text-align: center;
@@ -367,7 +367,7 @@ body {
 
 .visit-site-btn:hover {
     color: #F9F2E4;
-    background-color: #0E3D09;
+    background-color: #2D1810;
     transform: rotate(12deg);
 }
 
@@ -420,7 +420,7 @@ body {
     font-family: 'Inter', sans-serif;
     font-size: 10px;
     font-weight: 400;
-    color: #0E3D09;
+    color: #2D1810;
     text-align: center;
     min-height: 14px;
 }
