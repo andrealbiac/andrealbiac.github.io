@@ -12,16 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const indexText = document.querySelector('.index-text');
     const galleryModal = document.getElementById('gallery-modal');
     const nameHighlights = document.querySelectorAll('.name-highlight');
-    const scrollCue = document.querySelector('.scroll-cue');
     let backgroundManager = null;
     let hoveredCategory = null;
-
-    // Hide scroll cue after 6 seconds
-    if (scrollCue) {
-        setTimeout(() => {
-            scrollCue.classList.add('hidden');
-        }, 6000);
-    }
 
     // Subtle wave on 'branding' after 3 seconds to cue hover
     const brandingLink = document.querySelector('.category-link[data-category="branding"]');
@@ -60,14 +52,41 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Email button: "Email" text (portfolio note still reveals on hover)
+    // Contact/Email button: desktop = hover reveals portfolio note; mobile = tap to expand, then tap to email
     const getInTouchBtn = document.querySelector('.get-in-touch-btn');
     const bottomBar = document.querySelector('.bottom-bar');
     if (getInTouchBtn && bottomBar) {
         const defaultText = getInTouchBtn.dataset.defaultText || 'Contact';
         const hoverText = getInTouchBtn.dataset.hoverText || 'Email';
+
         bottomBar.addEventListener('mouseenter', () => { getInTouchBtn.textContent = hoverText; });
-        bottomBar.addEventListener('mouseleave', () => { getInTouchBtn.textContent = defaultText; });
+        bottomBar.addEventListener('mouseleave', () => {
+            if (!bottomBar.classList.contains('mobile-expanded')) {
+                getInTouchBtn.textContent = defaultText;
+            }
+        });
+
+        getInTouchBtn.addEventListener('click', (e) => {
+            const isMobile = window.matchMedia('(max-width: 768px)').matches;
+            if (isMobile) {
+                if (!bottomBar.classList.contains('mobile-expanded')) {
+                    e.preventDefault();
+                    bottomBar.classList.add('mobile-expanded');
+                    getInTouchBtn.textContent = hoverText;
+                }
+                // If already expanded, allow default (mailto opens)
+            }
+        });
+
+        // Mobile: tap outside to collapse portfolio note
+        document.addEventListener('click', (e) => {
+            if (window.matchMedia('(max-width: 768px)').matches &&
+                bottomBar.classList.contains('mobile-expanded') &&
+                !bottomBar.contains(e.target)) {
+                bottomBar.classList.remove('mobile-expanded');
+                getInTouchBtn.textContent = defaultText;
+            }
+        });
     }
 
     // Name hover image (id.png follows mouse when hovering "Andrea Albiac")

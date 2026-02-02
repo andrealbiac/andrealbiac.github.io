@@ -14,45 +14,69 @@ const BLOCK_H = 18;
 
 // Projects with site links (assign projectId to images that link to these)
 const projects = {
-    project1: { link: 'https://example.com', name: 'Project 1' },
-    project2: { link: 'https://example.com', name: 'Project 2' }
+    project1: { link: 'https://haydenmalan.nl', },
+    project2: { link: 'https://pear-ed.org', },
+    project3: { link: 'https://soulinthekitchen.com', },
+    project4: { link: 'https://hambremagazine.com', },
+    project5: { link: 'https://x402hackathon.com', },
+    project6: { link: 'https://ethglobal.com/showcase/dynos-95-9n57a', },
 };
 
 // Gallery images: src, label, description (optional), projectId (optional)
 const galleryImages = {
     branding: [
-        { src: 'img/brand-1.png', label: 'Brand Identity 01', projectId: 'project1' },
-        { src: 'img/brand-2.png', label: 'Brand Identity 02' },
-        { src: 'img/brand-3.png', label: 'Brand Identity 03' },
-        { src: 'img/brand-4.gif', label: 'Animated Logo' }
+        { src: 'img/brand-1.png', label: 'Soul in the Kitchen', description: 'Visual identity and illustrations for Soul in the Kitchen, a conscious food advocate, content creator and author.' },
+        { src: 'img/brand-2.png', label: 'Soul in the Kitchen', description: 'Visual identity and illustrations for Soul in the Kitchen, a conscious food advocate, content creator and author.' },
+        { src: 'img/brand-3.png', label: 'Soul in the Kitchen', description: 'Visual identity and illustrations for Soul in the Kitchen, a conscious food advocate, content creator and author.' },
+        { src: 'img/brand-4.gif', label: 'Soul in the Kitchen', description: 'Visual identity and illustrations for Soul in the Kitchen, a conscious food advocate, content creator and author.' },
+        { src: 'img/brand-5.png', label: 'Hambre magazine', description: 'Logo and brand for online magazine' },
+        { src: 'img/brand-6.png', label: 'Tame your gut', description: 'Social media assets and brand for Tame your gut, a health coach and content creator.' },
+        { src: 'img/brand-8.png', label: 'BuidlGuidl', description: 'Brand assets, merchandise and illustrations for BuidGuidl, an Ethereum community and blockchain education platform.' },
+        { src: 'img/brand-9.png', label: 'BuidlGuidl', description: 'Brand assets, merchandise and illustrations for BuidGuidl, an Ethereum community and blockchain education platform.' },
+        { src: 'img/brand-10.png', label: 'BuidlGuidl', description: 'Brand assets, merchandise and illustrations for BuidGuidl, an Ethereum community and blockchain education platform.' },
+        { src: 'img/brand-13.png', label: 'Bootcamp branding', description: 'Event branding and social media content for Devconnect Bootcamp' },
+        { src: 'img/brand-14.png', label: 'Scroll.io', description: 'Illustrations for Scroll.io website.' },
     ],
     web: [
-        { src: 'img/web-1.png', label: 'Web Project 01', projectId: 'project1' },
-        { src: 'img/web-2.png', label: 'Web Project 02', projectId: 'project1' },
-        { src: 'img/web-3.png', label: 'Web Project 03', projectId: 'project1' },
-        { src: 'img/web-4.png', label: 'Web Project 04', projectId: 'project1' },
-        { src: 'img/web-5.png', label: 'Web Project 05', projectId: 'project1' },
-        { src: 'img/web-6.png', label: 'Web Project 06', projectId: 'project1' },
-        { src: 'img/web-7.png', label: 'Web Project 07', projectId: 'project1' },
-        { src: 'img/web-8.png', label: 'Web Project 08', projectId: 'project1' },
-        { src: 'img/web-9.png', label: 'Web Project 09', projectId: 'project1' }
+        { src: 'img/web-2.png', label: 'Hayden Malan', description: 'Website portfolio for landscape architect.', projectId: 'project1' },
+        { src: 'img/web-3.png', label: 'Hayden Malan', description: 'Website portfolio for landscape architect.', projectId: 'project1' },
+        { src: 'img/web-5.png', label: 'Pear-ed', description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.', projectId: 'project2' },
+        { src: 'img/web-5-1.png', label: 'Pear-ed', description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.', projectId: 'project2' },
+        { src: 'img/web-6.png', label: 'Pear-ed', description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.', projectId: 'project2' },
+        { src: 'img/web-7.png', label: 'Pear-ed', description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.', projectId: 'project2' },
+        { src: 'img/web-8.png', label: 'Soul in the Kitchen', description: 'Website for Soul in the Kitchen\'s project, that includes a recipe archive blog, a portfolio page and a manifesto.', projectId: 'project3' },
+        { src: 'img/web-9.png', label: 'Soul in the Kitchen', description: 'Website for Soul in the Kitchen\'s project, that includes a recipe archive blog, a portfolio page and a manifesto.', projectId: 'project3' },
+        { src: 'img/web-10.png', label: 'Soul in the Kitchen', description: 'Website for Soul in the Kitchen\'s project, that includes a recipe archive blog, a portfolio page and a manifesto.', projectId: 'project3' },
+        { src: 'img/web-11.png', label: 'Hambre magazine', description: 'Website for Hambre magazine, an online magazine about food and culture. Illustrations by Alejando Peiro.', projectId: 'project4' },
+        { src: 'img/web-12.png', label: 'Hambre magazine', description: 'Website for Hambre magazine, an online magazine about food and culture. Illustrations by Alejando Peiro.', projectId: 'project4' },
+        { src: 'img/web-13.png', label: 'Hambre magazine', description: 'Website for Hambre magazine, an online magazine about food and culture. Illustrations by Alejando Peiro.', projectId: 'project4' },
+        { src: 'img/web-14.png', label: 'It\'s me!', description: 'Designed and coded this website- hosted on Github Pages.' },
+        { src: 'img/web-15.png', label: 'x402 Hackathon', description: 'Website hero section, brand design and social media content for x402 Hackathon.', projectId: 'project5' },
+        { src: 'img/web-20.png', label: 'Skill map design', description: 'Experimental UX for a blockchain skill map.'},
+        { src: 'img/web-21.png', label: 'DynOS95', description: 'UI design work for finalist project at ETHGlobal\'s London hackathon, winning Noun\'s best UX/UI implementation and Dynamic\'s best onboarding UX prizes, inspired in windows 95 aesthetics.', projectId: 'project6' },
+        { src: 'img/web-23.png', label: 'Gamified learning profile', description: 'UX/UI flow design for the profile view of SpeedrunEthereum\'s learning platform, amongst others.' },
+        { src: 'img/web-24.png', label: 'Wallet app design', description: 'Burner wallet prototypes app design.'}
     ],
     motion: [
-        { src: 'img/motion-1.gif', label: 'Motion Graphics 01' },
-        { src: 'img/motion-2.gif', label: 'Motion Graphics 02' }
+        { src: 'img/motion-1.gif', label: 'Ingennus', description: 'Full animation, concept and storyboard for Ingennus\' sustainability campaign, along with Tropical Studio.' },
+        { src: 'img/motion-2.gif', label: 'Ingennus', description: 'Full animation, concept and storyboard for Ingennus\' sustainability campaign, along with Tropical Studio.' },
+        { src: 'img/motion-3.gif', label: 'Etopia', description: 'Animated and worked in the concept of Etopia\'s moving identity, while working at Tropical Studio.' },
+        { src: 'img/motion-4.gif', label: 'CTF', description: 'Social media assets and video editing for Capture the Flag event.' }
     ],
     mixedmedia: [
-        { src: 'img/sun-1.gif', label: 'Mixed Media 01' },
-        { src: 'img/sun-2.gif', label: 'Mixed Media 02' },
-        { src: 'img/sun-3.gif', label: 'Mixed Media 03' }
+        { src: 'img/sun-1.gif', label: 'Risoprint Animation', description: 'Mixed media, frame by frame animation.Developed in a workshop led by Julia Schimautz from DTAN Studio: from Flipbook to animation. Hosted by Onomatopee (Eindhoven).' },
+        { src: 'img/sun-2.gif', label: 'Risoprint Animation', description: 'Mixed media, frame by frame animation.Developed in a workshop led by Julia Schimautz from DTAN Studio: from Flipbook to animation. Hosted by Onomatopee (Eindhoven).' },
+        { src: 'img/sun-3.gif', label: 'Risoprint Animation', description: 'Mixed media, frame by frame animation.Developed in a workshop led by Julia Schimautz from DTAN Studio: from Flipbook to animation. Hosted by Onomatopee (Eindhoven).' },
+        { src: 'img/sun-4.png', label: 'Risoprint Animation', description: 'Detail of risoprint.' }
     ],
     pottery: [
-        { src: 'img/chair-1.jpeg', label: 'Pottery Chair 01' },
-        { src: 'img/chair-2.jpeg', label: 'Pottery Chair 02' },
-        { src: 'img/chair-3.jpeg', label: 'Pottery Chair 03' },
-        { src: 'img/chair-4.jpeg', label: 'Pottery Chair 04' },
-        { src: 'img/chair-5.jpeg', label: 'Pottery Chair 05' },
-        { src: 'img/chair-6.jpeg', label: 'Pottery Chair 06' }
+        { src: 'img/chair-0.jpeg', label: 'Jean Prouvé\'s Standard chair' },
+        { src: 'img/chair-1.jpeg', label: 'Eames LCW & Kneeling chair' },
+        { src: 'img/chair-2.jpeg', label: 'Jean Prouvé\'s Standard chair' },
+        { src: 'img/chair-3.jpeg', label: 'Jean Prouvé\'s Standard chair' },
+        { src: 'img/chair-4.jpeg', label: 'Eames LCW' },
+        { src: 'img/chair-5.jpeg', label: 'Enzo Mari\'s Sedia 1' },
+        { src: 'img/chair-6.jpeg', label: 'Kneeling chair' }
     ]
 };
 
@@ -74,7 +98,6 @@ class BackgroundManager {
         this.sunIcon = document.querySelector('.sun-icon');
         this.rotationDegrees = 0;
         this.growthThreshold = window.innerHeight * 0.8;
-        this.scrollCue = document.querySelector('.scroll-cue');
         this.rafPending = false;
 
         this.smoothScroll = { y: 0 };
@@ -587,7 +610,8 @@ class BackgroundManager {
                 wheelTimeout = setTimeout(() => { wheelTimeout = null; }, 120);
             }
         };
-        galleryModal.addEventListener('wheel', wheelHandler, { passive: false });
+        galleryMain.addEventListener('wheel', wheelHandler, { passive: false });
+        this.galleryWheelTarget = galleryMain;
         this.galleryWheelHandler = wheelHandler;
 
         const keyHandler = (e) => {
@@ -647,8 +671,9 @@ class BackgroundManager {
             this.galleryDraggable.kill();
             this.galleryDraggable = null;
         }
-        if (galleryModal && this.galleryWheelHandler) {
-            galleryModal.removeEventListener('wheel', this.galleryWheelHandler);
+        if (this.galleryWheelTarget && this.galleryWheelHandler) {
+            this.galleryWheelTarget.removeEventListener('wheel', this.galleryWheelHandler);
+            this.galleryWheelTarget = null;
             this.galleryWheelHandler = null;
         }
         if (this.galleryDragCleanup) {

@@ -20,36 +20,6 @@ body {
 
 /* index page styles*/
 
-.scroll-cue {
-    position: fixed;
-    top: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 300;
-    text-align: center;
-    z-index: 2;
-    opacity: 1;
-    transition: opacity 0.5s ease;
-    pointer-events: none;
-}
-
-.scroll-cue.hidden {
-    opacity: 0;
-}
-
-.space-key {
-    display: inline-block;
-    background: #2D1810;
-    color: #F9F2E4;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 400;
-    margin: 0 2px;
-}
-
 .index-text {
     position: fixed;
     z-index: 1;
@@ -88,6 +58,7 @@ body {
 .index-text p .name-highlight-static {
     font-weight: 500;
     display: inline-block;
+    white-space: nowrap;
 }
 
 .index-text p .name-highlight span {
@@ -114,6 +85,7 @@ body {
 
 .index-text p a.category-link[data-category="branding"] {
     --category-color: #BD9EFF;
+    white-space: nowrap;
 }
 
 .index-text p a.category-link[data-category="web"] {
@@ -164,10 +136,21 @@ body {
     margin-right: 0;
 }
 
-.bottom-bar:hover .portfolio-note {
-    opacity: 1;
-    max-width: 300px;
-    margin-right: 1.25rem;
+@media (hover: hover) {
+    .bottom-bar:hover .portfolio-note {
+        opacity: 1;
+        max-width: 300px;
+        margin-right: 1.25rem;
+    }
+}
+
+/* Mobile: portfolio note expands via JS (tap Contact first, then Email opens mail) */
+@media screen and (max-width: 768px) {
+    .bottom-bar.mobile-expanded .portfolio-note {
+        opacity: 1;
+        max-width: 300px;
+        margin-right: 1rem;
+    }
 }
 
 .get-in-touch-btn {
@@ -240,7 +223,7 @@ body {
 }
 
 .gallery-description {
-    margin: 12px 0 0;
+    margin: 8px 0 0;
     font-family: 'Inter', sans-serif;
     font-size: 14px;
     font-weight: 300;
@@ -296,8 +279,15 @@ body {
     padding: 12px;
     max-height: 70vh;
     overflow-y: auto;
+    overflow-x: hidden;
     flex-shrink: 0;
     align-items: flex-end;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.gallery-thumbs::-webkit-scrollbar {
+    display: none;
 }
 
 .gallery-thumb {
@@ -338,16 +328,16 @@ body {
     display: inline-flex;
     margin-top: 12px;
     z-index: 1010;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: 72px;
-    height: 72px;
-    min-width: 72px;
-    min-height: 72px;
-    border-radius: 50%;
+    width: auto;
+    min-width: auto;
+    height: auto;
+    padding: 8px 16px;
+    border-radius: 999px;
     font-family: 'Inter', sans-serif;
-    font-size: 11px;
+    font-size: 9px;
     font-weight: 400;
     line-height: 1.2;
     color: #2D1810;
@@ -356,19 +346,14 @@ body {
     text-decoration: none;
     cursor: pointer;
     text-align: center;
-    padding: 0;
     text-transform: uppercase;
     transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
-}
-
-.visit-site-btn span {
-    display: block;
+    white-space: nowrap;
 }
 
 .visit-site-btn:hover {
     color: #F9F2E4;
     background-color: #2D1810;
-    transform: rotate(12deg);
 }
 
 
@@ -415,6 +400,11 @@ body {
     border-radius: 0;
 }
 
+.particle-hover-image[src*="brand-15"] {
+    max-width: 180px;
+    max-height: 180px;
+}
+
 .particle-hover-label {
     margin-top: 8px;
     font-family: 'Inter', sans-serif;
@@ -456,8 +446,8 @@ body {
 }
 
 .sun-icon {
-    width: 60px;
-    height: 60px;
+    width: 52px;
+    height: 52px;
     transform-origin: center;
     will-change: transform;
 }
@@ -486,11 +476,6 @@ body {
         padding: 0 35px;
     }
 
-    .scroll-cue {
-        font-size: 12px;
-        top: 30px;
-    }
-
     .bottom-bar {
         bottom: 30px;
         gap: 1rem;
@@ -511,8 +496,8 @@ body {
     }
 
     .sun-icon {
-        width: 48px;
-        height: 48px;
+        width: 44px;
+        height: 44px;
     }
 
     .gallery-body {
@@ -522,13 +507,16 @@ body {
 
     .gallery-thumbs {
         flex-direction: row;
-        flex-wrap: wrap;
-        max-height: none;
-        width: auto;
-        justify-content: center;
+        flex-wrap: nowrap;
+        max-height: 120px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        width: 100%;
+        justify-content: flex-start;
         align-self: center;
         align-items: center;
         max-width: 100%;
+        -webkit-overflow-scrolling: touch;
     }
 
     .gallery-thumb {
@@ -538,6 +526,16 @@ body {
     .gallery-thumb img {
         max-width: 70px;
         max-height: 60px;
+    }
+
+    .particle-hover-image {
+        max-width: 200px;
+        max-height: 200px;
+    }
+
+    .particle-hover-image[src*="brand-15"] {
+        max-width: 145px;
+        max-height: 145px;
     }
 
     .gallery-header {
@@ -551,34 +549,6 @@ body {
     .gallery-description {
         font-size: 16px;
         margin-top: 8px;
-    }
-
-    .visit-site-btn {
-        position: fixed;
-        margin-top: 0;
-        top: auto;
-        left: 50%;
-        right: auto;
-        bottom: 220px;
-        transform: translateX(-50%);
-        flex-direction: row;
-        flex-wrap: nowrap;
-        width: auto;
-        min-width: auto;
-        height: auto;
-        min-height: auto;
-        padding: 14px 26px;
-        gap: 6px;
-        font-size: 14px;
-        border-radius: 999px;
-    }
-
-    .visit-site-btn span {
-        display: inline;
-    }
-
-    .visit-site-btn:hover {
-        transform: translateX(-50%) rotate(12deg);
     }
 }
 
@@ -596,22 +566,11 @@ body.gallery-open .auto-scroll-btn {
     transition: opacity 0.3s ease;
 }
 
-body.gallery-open .scroll-cue {
-    opacity: 0;
-    pointer-events: none;
-    visibility: hidden;
-}
-
 @media screen and (max-width: 480px) {
     .index-text p {
         width: 90%;
         font-size: 18px;
         padding: 0 30px;
-    }
-
-    .scroll-cue {
-        font-size: 11px;
-        top: 25px;
     }
 
     .bottom-bar {
@@ -634,13 +593,23 @@ body.gallery-open .scroll-cue {
     }
 
     .sun-icon {
-        width: 40px;
-        height: 40px;
+        width: 36px;
+        height: 36px;
     }
 
     .gallery-thumb img {
         max-width: 60px;
         max-height: 50px;
+    }
+
+    .particle-hover-image {
+        max-width: 175px;
+        max-height: 175px;
+    }
+
+    .particle-hover-image[src*="brand-15"] {
+        max-width: 125px;
+        max-height: 125px;
     }
 
     .gallery-header {
@@ -653,11 +622,5 @@ body.gallery-open .scroll-cue {
 
     .gallery-description {
         font-size: 15px;
-    }
-
-    .visit-site-btn {
-        bottom: 200px;
-        padding: 12px 22px;
-        font-size: 13px;
     }
 }
