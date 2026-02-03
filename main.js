@@ -152,6 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const isTouchLike = window.matchMedia('(hover: none)').matches;
             if (isTouchLike) {
                 if (touchHoveredCategory === category) {
+                    e.preventDefault();
                     touchHoveredCategory = null;
                     openGallery(category);
                 } else {
@@ -217,6 +218,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.addEventListener('unhighlightCategory', () => {
+        categoryLinks.forEach(link => {
+            link.classList.remove('highlighted');
+            link.style.color = '';
+        });
+        indexText.classList.remove('text-dimmed');
+    });
+
+    document.addEventListener('galleryClosed', () => {
+        touchHoveredCategory = null;
+        hoveredCategory = null;
+        document.dispatchEvent(new CustomEvent('categoryHoverEnd'));
         categoryLinks.forEach(link => {
             link.classList.remove('highlighted');
             link.style.color = '';

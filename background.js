@@ -742,6 +742,12 @@ class BackgroundManager {
         }
         this.galleryGoToIndex = null;
 
+        this.hoveredBlock = null;
+        this.hoveredCategory = null;
+        this.unhighlightCategoryInText();
+        this.hideAllParticleOverlays();
+        document.dispatchEvent(new CustomEvent('galleryClosed'));
+
         document.body.classList.remove('gallery-open');
         gsap.to(galleryModal, {
             opacity: 0,
@@ -754,8 +760,8 @@ class BackgroundManager {
                 document.documentElement.style.overflow = '';
                 document.body.style.overflow = '';
                 this.activeGallery = null;
-
-                if (this.isAutoScrolling && !this.autoScrollRunning) {
+                this.isAutoScrolling = true;
+                if (!this.autoScrollRunning) {
                     this.startAutoScroll();
                 }
             }
