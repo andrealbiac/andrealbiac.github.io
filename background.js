@@ -113,6 +113,7 @@ class BackgroundManager {
         this.preloadImages();
 
         this.activeGallery = null;
+        this.pushedStateForGallery = false;
 
         // Particle overlays container for animated GIFs
         this.overlaysContainer = document.getElementById('particle-overlays-container');
@@ -125,6 +126,9 @@ class BackgroundManager {
 
         this.setupCanvas();
         this.setupCategoryHoverListeners();
+        window.addEventListener('popstate', () => {
+            if (this.activeGallery) this.closeGallery(true);
+        });
         this.init();
         this.scheduleRandomPeek();
     }
@@ -557,6 +561,12 @@ class BackgroundManager {
         this.hoveredCategory = null;
         this.hideAllParticleOverlays();
 
+        if (window.matchMedia('(max-width: 768px)').matches) {
+            const url = window.location.pathname + window.location.search + '#gallery';
+            history.pushState({ gallery: category }, '', url);
+            this.pushedStateForGallery = true;
+        }
+
         const galleryModal = document.getElementById('gallery-modal');
         const centerWrap = document.querySelector('.gallery-center-image');
         const thumbsContainer = document.querySelector('.gallery-thumbs');
@@ -713,7 +723,7 @@ class BackgroundManager {
         }
     }
 
-    closeGallery() {
+    closeGallery(fromPopstate = false) {
         const galleryModal = document.getElementById('gallery-modal');
         if (this.galleryKeyHandler) {
             document.removeEventListener('keydown', this.galleryKeyHandler);
@@ -764,6 +774,10 @@ class BackgroundManager {
                 if (!this.autoScrollRunning) {
                     this.startAutoScroll();
                 }
+                if (!fromPopstate && this.pushedStateForGallery) {
+                    history.back();
+                }
+                this.pushedStateForGallery = false;
             }
         });
     }
