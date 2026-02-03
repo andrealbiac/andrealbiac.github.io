@@ -503,6 +503,7 @@ body {
     .gallery-body {
         flex-direction: column;
         padding: 70px 16px 16px;
+        justify-content: flex-start;
     }
 
     .gallery-thumbs {
@@ -512,9 +513,11 @@ body {
         overflow-x: auto;
         overflow-y: hidden;
         width: 100%;
-        justify-content: flex-start;
+        justify-content: center;
         align-self: center;
-        align-items: center;
+        align-items: flex-end;
+        align-content: flex-end;
+        margin-top: auto;
         max-width: 100%;
         -webkit-overflow-scrolling: touch;
     }

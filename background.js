@@ -34,22 +34,22 @@ const galleryImages = {
         { src: 'img/brand-8.png', label: 'BuidlGuidl', description: 'Brand assets, merchandise and illustrations for BuidGuidl, an Ethereum community and blockchain education platform.' },
         { src: 'img/brand-9.png', label: 'BuidlGuidl', description: 'Brand assets, merchandise and illustrations for BuidGuidl, an Ethereum community and blockchain education platform.' },
         { src: 'img/brand-10.png', label: 'BuidlGuidl', description: 'Brand assets, merchandise and illustrations for BuidGuidl, an Ethereum community and blockchain education platform.' },
-        { src: 'img/brand-13.png', label: 'Bootcamp branding', description: 'Event branding and social media content for Devconnect Bootcamp' },
+        { src: 'img/brand-11.png', label: 'Sketch', description: 'Sketch for BuidlGuidl\'s hero illustration.' },
         { src: 'img/brand-14.png', label: 'Scroll.io', description: 'Illustrations for Scroll.io website.' },
     ],
     web: [
         { src: 'img/web-2.png', label: 'Hayden Malan', description: 'Website portfolio for landscape architect.', projectId: 'project1' },
         { src: 'img/web-3.png', label: 'Hayden Malan', description: 'Website portfolio for landscape architect.', projectId: 'project1' },
-        { src: 'img/web-5.png', label: 'Pear-ed', description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.', projectId: 'project2' },
-        { src: 'img/web-5-1.png', label: 'Pear-ed', description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.', projectId: 'project2' },
-        { src: 'img/web-6.png', label: 'Pear-ed', description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.', projectId: 'project2' },
-        { src: 'img/web-7.png', label: 'Pear-ed', description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.', projectId: 'project2' },
         { src: 'img/web-8.png', label: 'Soul in the Kitchen', description: 'Website for Soul in the Kitchen\'s project, that includes a recipe archive blog, a portfolio page and a manifesto.', projectId: 'project3' },
         { src: 'img/web-9.png', label: 'Soul in the Kitchen', description: 'Website for Soul in the Kitchen\'s project, that includes a recipe archive blog, a portfolio page and a manifesto.', projectId: 'project3' },
         { src: 'img/web-10.png', label: 'Soul in the Kitchen', description: 'Website for Soul in the Kitchen\'s project, that includes a recipe archive blog, a portfolio page and a manifesto.', projectId: 'project3' },
         { src: 'img/web-11.png', label: 'Hambre magazine', description: 'Website for Hambre magazine, an online magazine about food and culture. Illustrations by Alejando Peiro.', projectId: 'project4' },
         { src: 'img/web-12.png', label: 'Hambre magazine', description: 'Website for Hambre magazine, an online magazine about food and culture. Illustrations by Alejando Peiro.', projectId: 'project4' },
         { src: 'img/web-13.png', label: 'Hambre magazine', description: 'Website for Hambre magazine, an online magazine about food and culture. Illustrations by Alejando Peiro.', projectId: 'project4' },
+        { src: 'img/web-5.png', label: 'Pear-ed', description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.', projectId: 'project2' },
+        { src: 'img/web-5-1.png', label: 'Pear-ed', description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.', projectId: 'project2' },
+        { src: 'img/web-6.png', label: 'Pear-ed', description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.', projectId: 'project2' },
+        { src: 'img/web-7.png', label: 'Pear-ed', description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.', projectId: 'project2' },
         { src: 'img/web-14.png', label: 'It\'s me!', description: 'Designed and coded this website- hosted on Github Pages.' },
         { src: 'img/web-15.png', label: 'x402 Hackathon', description: 'Website hero section, brand design and social media content for x402 Hackathon.', projectId: 'project5' },
         { src: 'img/web-20.png', label: 'Skill map design', description: 'Experimental UX for a blockchain skill map.'},
@@ -73,7 +73,6 @@ const galleryImages = {
         { src: 'img/chair-0.jpeg', label: 'Jean Prouvé\'s Standard chair' },
         { src: 'img/chair-1.jpeg', label: 'Eames LCW & Kneeling chair' },
         { src: 'img/chair-2.jpeg', label: 'Jean Prouvé\'s Standard chair' },
-        { src: 'img/chair-3.jpeg', label: 'Jean Prouvé\'s Standard chair' },
         { src: 'img/chair-4.jpeg', label: 'Eames LCW' },
         { src: 'img/chair-5.jpeg', label: 'Enzo Mari\'s Sedia 1' },
         { src: 'img/chair-6.jpeg', label: 'Kneeling chair' }
@@ -90,6 +89,7 @@ class BackgroundManager {
         this.blocks = [];
         this.minBlocks = 16;
         this.maxBlocks = 22;
+        this.mobileMaxWidth = 768;
         this.lastScrollY = 0;
         this.lastBlockCreationScroll = 0;
         this.isAutoScrolling = false;
@@ -116,6 +116,7 @@ class BackgroundManager {
         // Particle overlays container for animated GIFs
         this.overlaysContainer = document.getElementById('particle-overlays-container');
         this.activeOverlays = new Map(); // Map of block -> overlay element
+        this.closingOverlays = new Set(); // Blocks whose overlay is animating closed (don't immediate-remove)
         this.hoveredCategory = null; // Category being hovered in text
         this.peekBlock = null;
         this.peekTimeoutId = null;
@@ -204,6 +205,7 @@ class BackgroundManager {
     removeOverlay(block, immediate = false, onComplete = null) {
         const overlay = this.activeOverlays.get(block);
         if (!overlay) return;
+        this.closingOverlays.delete(block);
         if (immediate) {
             gsap.killTweensOf(overlay);
             if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
@@ -211,14 +213,17 @@ class BackgroundManager {
             if (onComplete) onComplete();
             return;
         }
+        this.closingOverlays.add(block);
         gsap.to(overlay, {
             opacity: 0,
             scale: 0.05,
-            duration: 0.25,
+            duration: 0.18,
             ease: 'power2.in',
             xPercent: -50,
             yPercent: -50,
+            overwrite: true,
             onComplete: () => {
+                this.closingOverlays.delete(block);
                 if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
                 this.activeOverlays.delete(block);
                 if (onComplete) onComplete();
@@ -337,8 +342,10 @@ class BackgroundManager {
         const sy = this.smoothScroll.y;
         const h = window.innerHeight;
         // Clean up stale overlays (e.g. from fast cursor moves) – remove if block shouldn't have one
+        // Don't immediate-remove overlays that are animating closed (closingOverlays)
         const toRemove = [];
         this.activeOverlays.forEach((overlay, block) => {
+            if (this.closingOverlays.has(block)) return;
             const isHovered = block === this.hoveredBlock;
             const isCategory = this.hoveredCategory && block.category === this.hoveredCategory;
             const isPeek = block === this.peekBlock;
@@ -733,12 +740,23 @@ class BackgroundManager {
         return visibleSrcs;
     }
 
+    isMobile() {
+        return window.innerWidth <= this.mobileMaxWidth;
+    }
+
+    getBlockCountRange() {
+        if (this.isMobile()) {
+            return { min: 14, max: 20 };
+        }
+        return { min: this.minBlocks, max: this.maxBlocks };
+    }
+
     createBlockData(isInitial = false) {
-        // Assign a weighted random category to this particle
+        // Assign a weighted random category to this particle (motion a bit more often)
         const categoryWeights = {
             branding: 3,
             web: 3,
-            motion: 1,
+            motion: 2.5,
             mixedmedia: 2,
             pottery: 2
         };
@@ -782,7 +800,11 @@ class BackgroundManager {
         if (!isInitial) {
             const baseY = window.scrollY + window.innerHeight * 0.8;
             const bandHeight = window.innerHeight * 1.2;
-            block.y = baseY + Math.random() * bandHeight;
+            // More even spread: use sub-bands so blocks don't cluster
+            const subBands = 4;
+            const subBandHeight = bandHeight / subBands;
+            const subBand = Math.floor(Math.random() * subBands);
+            block.y = baseY + subBand * subBandHeight + Math.random() * subBandHeight;
         }
         return block;
     }
@@ -792,9 +814,16 @@ class BackgroundManager {
         this.container.style.height = `${initialHeight}px`;
         document.body.style.height = `${initialHeight}px`;
 
-        const initialCount = Math.ceil((this.minBlocks + this.maxBlocks) / 2) + 5;
+        const range = this.getBlockCountRange();
+        const initialCount = Math.ceil((range.min + range.max) / 2) + (this.isMobile() ? 2 : 5);
+        const initialHeightRange = window.innerHeight * 3.5;
         for (let i = 0; i < initialCount; i++) {
-            this.blocks.push(this.createBlockData(true));
+            const block = this.createBlockData(true);
+            // More even initial spread: distribute Y across the range with small jitter
+            const t = initialCount <= 1 ? 0.5 : i / (initialCount - 1);
+            const jitter = (Math.random() - 0.5) * (initialHeightRange * 0.08);
+            block.y = t * initialHeightRange * 0.92 + jitter;
+            this.blocks.push(block);
         }
 
         this.smoothScroll.y = window.scrollY;
@@ -911,7 +940,9 @@ class BackgroundManager {
 
     addBlock() {
         const block = this.createBlockData(false);
-        block.y = window.scrollY + window.innerHeight * 1.5 + Math.random() * window.innerHeight;
+        const bandStart = window.scrollY + window.innerHeight * 1.2;
+        const bandHeight = window.innerHeight * 1.0;
+        block.y = bandStart + Math.random() * bandHeight;
         this.blocks.push(block);
     }
 
@@ -941,10 +972,13 @@ class BackgroundManager {
         ).length;
 
         // Add blocks to maintain density in active region (no cap on total – we don't cull)
-        if (currentScrollY - this.lastBlockCreationScroll > h * 0.4) {
-            const targetCount = (this.minBlocks + this.maxBlocks) / 2;
+        const range = this.getBlockCountRange();
+        const scrollStep = this.isMobile() ? h * 0.35 : h * 0.4;
+        if (currentScrollY - this.lastBlockCreationScroll > scrollStep) {
+            const targetCount = (range.min + range.max) / 2;
             const needed = Math.max(0, targetCount - activeCount);
-            const toAdd = Math.min(Math.max(needed, activeCount < this.minBlocks ? 1 : 0), 5);
+            const maxPerStep = this.isMobile() ? 4 : 5;
+            const toAdd = Math.min(Math.max(needed, activeCount < range.min ? 1 : 0), maxPerStep);
             for (let i = 0; i < toAdd; i++) this.addBlock();
             this.lastBlockCreationScroll = currentScrollY;
         }
