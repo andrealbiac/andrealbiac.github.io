@@ -20,6 +20,7 @@ const projects = {
     project4: { link: 'https://hambremagazine.com', },
     project5: { link: 'https://x402hackathon.com', },
     project6: { link: 'https://ethglobal.com/showcase/dynos-95-9n57a', },
+    project7: { link: 'https://vimeo.com/1072529410', label: 'See full video' },
 };
 
 // Gallery images: src, label, description (optional), projectId (optional)
@@ -34,7 +35,7 @@ const galleryImages = {
         { src: 'img/brand-8.png', label: 'BuidlGuidl', description: 'Brand assets, merchandise and illustrations for BuidGuidl, an Ethereum community and blockchain education platform.' },
         { src: 'img/brand-9.png', label: 'BuidlGuidl', description: 'Brand assets, merchandise and illustrations for BuidGuidl, an Ethereum community and blockchain education platform.' },
         { src: 'img/brand-10.png', label: 'BuidlGuidl', description: 'Brand assets, merchandise and illustrations for BuidGuidl, an Ethereum community and blockchain education platform.' },
-        { src: 'img/brand-11.png', label: 'Sketch', description: 'Sketch for BuidlGuidl\'s hero illustration.' },
+        { src: 'img/brand-11.png', label: 'Illustration sketch', description: 'Sketch for BuidlGuidl\'s hero illustration.' },
         { src: 'img/brand-14.png', label: 'Scroll.io', description: 'Illustrations for Scroll.io website.' },
     ],
     web: [
@@ -58,8 +59,8 @@ const galleryImages = {
         { src: 'img/web-24.png', label: 'Wallet app design', description: 'Burner wallet prototypes app design.'}
     ],
     motion: [
-        { src: 'img/motion-1.gif', label: 'Ingennus', description: 'Full animation, concept and storyboard for Ingennus\' sustainability campaign, along with Tropical Studio.' },
-        { src: 'img/motion-2.gif', label: 'Ingennus', description: 'Full animation, concept and storyboard for Ingennus\' sustainability campaign, along with Tropical Studio.' },
+        { src: 'img/motion-1.gif', label: 'Ingennus', description: 'Full animation, concept and storyboard for Ingennus\' sustainability campaign, along with Tropical Studio.', projectId: 'project7' },
+        { src: 'img/motion-2.gif', label: 'Ingennus', description: 'Full animation, concept and storyboard for Ingennus\' sustainability campaign, along with Tropical Studio.', projectId: 'project7' },
         { src: 'img/motion-3.gif', label: 'Etopia', description: 'Animated and worked in the concept of Etopia\'s moving identity, while working at Tropical Studio.' },
         { src: 'img/motion-4.gif', label: 'CTF', description: 'Social media assets and video editing for Capture the Flag event.' }
     ],
@@ -70,7 +71,7 @@ const galleryImages = {
         { src: 'img/sun-4.png', label: 'Risoprint Animation', description: 'Detail of risoprint.' }
     ],
     pottery: [
-        { src: 'img/chair-0.jpeg', label: 'Jean Prouvé\'s Standard chair' },
+        { src: 'img/chair-0.jpeg', label: 'Jean Prouvé\'s in the making' },
         { src: 'img/chair-1.jpeg', label: 'Eames LCW & Kneeling chair' },
         { src: 'img/chair-2.jpeg', label: 'Jean Prouvé\'s Standard chair' },
         { src: 'img/chair-4.jpeg', label: 'Eames LCW' },
@@ -518,6 +519,7 @@ class BackgroundManager {
         thumbsContainer.innerHTML = '';
         visitBtn.style.display = 'none';
         visitBtn.href = '#';
+        visitBtn.textContent = 'Visit site';
 
         const images = galleryImages[category];
         const n = images.length;
@@ -554,7 +556,9 @@ class BackgroundManager {
             descEl.style.display = imgData.description ? '' : 'none';
 
             if (visitBtn && imgData.projectId && projects[imgData.projectId]) {
-                visitBtn.href = projects[imgData.projectId].link;
+                const proj = projects[imgData.projectId];
+                visitBtn.href = proj.link;
+                visitBtn.textContent = proj.label || 'Visit site';
                 visitBtn.style.display = 'inline-flex';
             } else {
                 visitBtn.style.display = 'none';

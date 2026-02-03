@@ -1,3 +1,19 @@
+/* Custom font from /fonts – Regular standard, Medium for bold */
+@font-face {
+    font-family: 'Modern Era';
+    src: url('fonts/Modern Era Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Modern Era';
+    src: url('fonts/Modern Era Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* Hide scrollbar, keep scroll */
 html {
     overflow-y: scroll;
@@ -12,7 +28,7 @@ body {
     display: flex;
     margin: 0;
     min-height: 100vh;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Modern Era', sans-serif;
     position: relative;
     overflow-x: hidden;
     color: #2D1810;
@@ -54,6 +70,7 @@ body {
     opacity: 0.1;
 }
 
+/* Andrea Albiac + graphic designer: use Medium weight */
 .index-text p .name-highlight,
 .index-text p .name-highlight-static {
     font-weight: 500;
@@ -125,8 +142,8 @@ body {
 }
 
 .portfolio-note {
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
+    font-family: 'Modern Era', sans-serif;
+    font-size: 16px;
     font-weight: 300;
     opacity: 0;
     max-width: 0;
@@ -155,8 +172,8 @@ body {
 
 .get-in-touch-btn {
     padding: 8px 20px;
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
+    font-family: 'Modern Era', sans-serif;
+    font-size: 15px;
     font-weight: 300;
     color: #2D1810;
     white-space: nowrap;
@@ -216,16 +233,16 @@ body {
 
 .gallery-title {
     margin: 0;
-    font-family: 'Inter', sans-serif;
-    font-size: 18px;
+    font-family: 'Modern Era', sans-serif;
+    font-size: 20px;
     font-weight: 500;
     color: #2D1810;
 }
 
 .gallery-description {
     margin: 8px 0 0;
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
+    font-family: 'Modern Era', sans-serif;
+    font-size: 16px;
     font-weight: 300;
     color: #2D1810;
     line-height: 1.4;
@@ -334,11 +351,11 @@ body {
     width: auto;
     min-width: auto;
     height: auto;
-    padding: 8px 16px;
+    padding: 8px 20px;
     border-radius: 999px;
-    font-family: 'Inter', sans-serif;
-    font-size: 9px;
-    font-weight: 400;
+    font-family: 'Modern Era', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
     line-height: 1.2;
     color: #2D1810;
     background: transparent;
@@ -346,7 +363,6 @@ body {
     text-decoration: none;
     cursor: pointer;
     text-align: center;
-    text-transform: uppercase;
     transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
     white-space: nowrap;
 }
@@ -354,6 +370,7 @@ body {
 .visit-site-btn:hover {
     color: #F9F2E4;
     background-color: #2D1810;
+    transform: scale(1.05);
 }
 
 
@@ -392,8 +409,8 @@ body {
 .particle-hover-image {
     -webkit-user-drag: none;
     user-drag: none;
-    max-width: 250px;
-    max-height: 250px;
+    max-width: 225px;
+    max-height: 225px;
     width: auto;
     height: auto;
     object-fit: contain;
@@ -401,13 +418,13 @@ body {
 }
 
 .particle-hover-image[src*="brand-15"] {
-    max-width: 180px;
-    max-height: 180px;
+    max-width: 163px;
+    max-height: 163px;
 }
 
 .particle-hover-label {
     margin-top: 8px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Modern Era', sans-serif;
     font-size: 10px;
     font-weight: 400;
     color: #2D1810;
@@ -482,11 +499,11 @@ body {
     }
 
     .get-in-touch-btn {
-        font-size: 13px;
+        font-size: 14px;
     }
 
     .portfolio-note {
-        font-size: 14px;
+        font-size: 15px;
     }
 
     .auto-scroll-btn {
@@ -504,6 +521,16 @@ body {
         flex-direction: column;
         padding: 70px 16px 16px;
         justify-content: flex-start;
+    }
+
+    .gallery-center-image,
+    .gallery-center-image img {
+        max-height: 56vh;
+    }
+
+    .gallery-modal.motion .gallery-center-image img,
+    .gallery-modal.motion .gallery-thumb img {
+        max-height: 40vh;
     }
 
     .gallery-thumbs {
@@ -532,13 +559,13 @@ body {
     }
 
     .particle-hover-image {
-        max-width: 200px;
-        max-height: 200px;
+        max-width: 180px;
+        max-height: 180px;
     }
 
     .particle-hover-image[src*="brand-15"] {
-        max-width: 145px;
-        max-height: 145px;
+        max-width: 130px;
+        max-height: 130px;
     }
 
     .gallery-header {
@@ -546,11 +573,11 @@ body {
     }
 
     .gallery-title {
-        font-size: 22px;
+        font-size: 24px;
     }
 
     .gallery-description {
-        font-size: 16px;
+        font-size: 18px;
         margin-top: 8px;
     }
 }
@@ -582,11 +609,11 @@ body.gallery-open .auto-scroll-btn {
     }
 
     .get-in-touch-btn {
-        font-size: 12px;
+        font-size: 13px;
     }
 
     .portfolio-note {
-        font-size: 13px;
+        font-size: 14px;
     }
 
     .auto-scroll-btn {
@@ -606,13 +633,13 @@ body.gallery-open .auto-scroll-btn {
     }
 
     .particle-hover-image {
-        max-width: 175px;
-        max-height: 175px;
+        max-width: 158px;
+        max-height: 158px;
     }
 
     .particle-hover-image[src*="brand-15"] {
-        max-width: 125px;
-        max-height: 125px;
+        max-width: 114px;
+        max-height: 114px;
     }
 
     .gallery-header {
@@ -620,10 +647,10 @@ body.gallery-open .auto-scroll-btn {
     }
 
     .gallery-title {
-        font-size: 20px;
+        font-size: 22px;
     }
 
     .gallery-description {
-        font-size: 15px;
+        font-size: 17px;
     }
 }
