@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const nameHighlights = document.querySelectorAll('.name-highlight');
     let backgroundManager = null;
     let hoveredCategory = null;
-    let touchHoveredCategory = null; // On (hover: none): first tap = show hover, second = open gallery
 
     // Subtle wave on 'branding' after 3 seconds to cue hover
     const brandingLink = document.querySelector('.category-link[data-category="branding"]');
@@ -149,38 +148,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         link.addEventListener('click', (e) => {
-            const isTouchLike = window.matchMedia('(hover: none)').matches;
-            if (isTouchLike) {
-                if (touchHoveredCategory === category) {
-                    e.preventDefault();
-                    touchHoveredCategory = null;
-                    openGallery(category);
-                } else {
-                    e.preventDefault();
-                    touchHoveredCategory = category;
-                    link.style.color = color;
-                    indexText.classList.add('text-dimmed');
-                    document.dispatchEvent(new CustomEvent('categoryHoverStart', { detail: { category } }));
-                }
-            } else {
-                e.preventDefault();
-                openGallery(category);
-            }
+            e.preventDefault();
+            openGallery(category);
         });
-    });
-
-    // On touch devices: clear category "tap hover" when tapping outside (not contact, not gallery)
-    document.addEventListener('click', (e) => {
-        if (!window.matchMedia('(hover: none)').matches || touchHoveredCategory === null) return;
-        const t = e.target;
-        if (t.closest('.category-link') || t.closest('.get-in-touch-btn') || t.closest('.bottom-bar') || t.closest('#gallery-modal')) return;
-        touchHoveredCategory = null;
-        document.dispatchEvent(new CustomEvent('categoryHoverEnd'));
-        categoryLinks.forEach(link => {
-            link.classList.remove('highlighted');
-            link.style.color = '';
-        });
-        indexText.classList.remove('text-dimmed');
     });
 
     // Gallery functions
@@ -226,7 +196,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.addEventListener('galleryClosed', () => {
-        touchHoveredCategory = null;
         hoveredCategory = null;
         document.dispatchEvent(new CustomEvent('categoryHoverEnd'));
         categoryLinks.forEach(link => {

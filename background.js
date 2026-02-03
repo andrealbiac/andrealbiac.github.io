@@ -123,6 +123,7 @@ class BackgroundManager {
         this.peekBlock = null;
         this.peekTimeoutId = null;
         this.peekCloseTimeoutId = null;
+        this.lastParticleOverlayShownAt = 0;
 
         this.setupCanvas();
         this.setupCategoryHoverListeners();
@@ -202,6 +203,10 @@ class BackgroundManager {
     getOrCreateOverlay(block) {
         if (!this.activeOverlays.has(block)) {
             const overlay = this.createOverlayElement();
+            overlay.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.openGallery(block.category, block.imageIndex, block);
+            });
             this.activeOverlays.set(block, overlay);
         }
         return this.activeOverlays.get(block);
@@ -390,12 +395,15 @@ class BackgroundManager {
         window.addEventListener('resize', () => this.resizeCanvas());
 
         this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
-        this.canvas.addEventListener('mouseleave', () => this.handleMouseLeave());
+        this.canvas.addEventListener('mouseleave', (e) => this.handleMouseLeave(e));
         this.canvas.addEventListener('click', (e) => this.handleCanvasClick(e));
+        this.canvas.addEventListener('touchend', (e) => this.handleCanvasTouchEnd(e), { passive: false });
 
         document.addEventListener('click', (e) => {
             if (!window.matchMedia('(hover: none)').matches || !this.hoveredBlock) return;
             if (this.canvas.contains(e.target) || document.getElementById('gallery-modal').contains(e.target)) return;
+            if (e.target.closest('.particle-hover-overlay')) return;
+            if (Date.now() - this.lastParticleOverlayShownAt < 450) return;
             if (this.wasAutoScrollingBeforeHover) {
                 this.isAutoScrolling = true;
                 if (!this.autoScrollRunning) this.startAutoScroll();
@@ -409,9 +417,11 @@ class BackgroundManager {
 
     getCanvasPoint(e) {
         const rect = this.canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : (e.changedTouches ? e.changedTouches[0].clientX : e.clientX);
+        const clientY = e.touches ? e.touches[0].clientY : (e.changedTouches ? e.changedTouches[0].clientY : e.clientY);
         return {
-            x: e.clientX - rect.left,
-            y: e.clientY - rect.top,
+            x: clientX - rect.left,
+            y: clientY - rect.top,
         };
     }
 
@@ -490,7 +500,10 @@ class BackgroundManager {
         document.dispatchEvent(event);
     }
 
-    handleMouseLeave() {
+    handleMouseLeave(e) {
+        if (e && e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('#particle-overlays-container')) {
+            return;
+        }
         this.canvas.style.cursor = 'default';
         if (this.hoveredBlock) {
             // Resume auto-scroll
@@ -513,42 +526,54 @@ class BackgroundManager {
         }
     }
 
+    applyParticleTouchState(point) {
+        const block = this.getBlockAtPoint(point, this.hoveredBlock);
+        if (block) {
+            if (this.hoveredBlock === block) {
+                this.hoveredBlock = null;
+                this.openGallery(block.category, block.imageIndex, block);
+                return;
+            }
+            if (this.hoveredBlock && !this.hoveredCategory) {
+                this.removeOverlay(this.hoveredBlock);
+            }
+            this.hoveredBlock = block;
+            this.scheduleRandomPeek();
+            const wasAutoScrolling = this.isAutoScrolling;
+            if (wasAutoScrolling) this.isAutoScrolling = false;
+            this.wasAutoScrollingBeforeHover = wasAutoScrolling;
+            this.highlightCategoryInText(block.category);
+            this.showParticleOverlayForBlock(block);
+            this.lastParticleOverlayShownAt = Date.now();
+        } else {
+            if (this.hoveredBlock) {
+                if (this.wasAutoScrollingBeforeHover) {
+                    this.isAutoScrolling = true;
+                    if (!this.autoScrollRunning) this.startAutoScroll();
+                }
+                this.unhighlightCategoryInText();
+                if (!this.hoveredCategory) this.removeOverlay(this.hoveredBlock);
+                this.hoveredBlock = null;
+                this.scheduleRandomPeek();
+            }
+        }
+    }
+
+    handleCanvasTouchEnd(e) {
+        if (!window.matchMedia('(hover: none)').matches) return;
+        if (e.changedTouches.length === 0) return;
+        const rect = this.canvas.getBoundingClientRect();
+        const t = e.changedTouches[0];
+        if (t.clientX < rect.left || t.clientX > rect.right || t.clientY < rect.top || t.clientY > rect.bottom) return;
+        const point = this.getCanvasPoint(e);
+        this.applyParticleTouchState(point);
+        e.preventDefault();
+    }
+
     handleCanvasClick(e) {
         const isTouchLike = window.matchMedia('(hover: none)').matches;
         if (isTouchLike) {
-            const point = this.getCanvasPoint(e);
-            const block = this.getBlockAtPoint(point, this.hoveredBlock);
-            if (block) {
-                if (this.hoveredBlock === block) {
-                    this.hoveredBlock = null;
-                    this.openGallery(block.category, block.imageIndex, block);
-                    return;
-                }
-                e.preventDefault();
-                if (this.hoveredBlock && !this.hoveredCategory) {
-                    this.removeOverlay(this.hoveredBlock);
-                }
-                this.hoveredBlock = block;
-                this.scheduleRandomPeek();
-                const wasAutoScrolling = this.isAutoScrolling;
-                if (wasAutoScrolling) this.isAutoScrolling = false;
-                this.wasAutoScrollingBeforeHover = wasAutoScrolling;
-                this.highlightCategoryInText(block.category);
-                this.showParticleOverlayForBlock(block);
-                return;
-            } else {
-                if (this.hoveredBlock) {
-                    if (this.wasAutoScrollingBeforeHover) {
-                        this.isAutoScrolling = true;
-                        if (!this.autoScrollRunning) this.startAutoScroll();
-                    }
-                    this.unhighlightCategoryInText();
-                    if (!this.hoveredCategory) this.removeOverlay(this.hoveredBlock);
-                    this.hoveredBlock = null;
-                    this.scheduleRandomPeek();
-                }
-                return;
-            }
+            return;
         }
         const block = this.getBlockAtPoint(this.getCanvasPoint(e));
         if (block) {
