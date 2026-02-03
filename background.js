@@ -68,7 +68,7 @@ const galleryImages = {
         { src: 'img/sun-1.gif', label: 'Risoprint Animation', description: 'Mixed media, frame by frame animation.Developed in a workshop led by Julia Schimautz from DTAN Studio: from Flipbook to animation. Hosted by Onomatopee (Eindhoven).' },
         { src: 'img/sun-2.gif', label: 'Risoprint Animation', description: 'Mixed media, frame by frame animation.Developed in a workshop led by Julia Schimautz from DTAN Studio: from Flipbook to animation. Hosted by Onomatopee (Eindhoven).' },
         { src: 'img/sun-3.gif', label: 'Risoprint Animation', description: 'Mixed media, frame by frame animation.Developed in a workshop led by Julia Schimautz from DTAN Studio: from Flipbook to animation. Hosted by Onomatopee (Eindhoven).' },
-        { src: 'img/sun-4.png', label: 'Risoprint Animation', description: 'Detail of risoprint.' }
+        { src: 'img/sun-4.png', label: 'Styleframe' }
     ],
     pottery: [
         { src: 'img/chair-0.jpeg', label: 'Jean Prouvé\'s in the making' },
