@@ -388,6 +388,19 @@ class BackgroundManager {
         this.canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
         this.canvas.addEventListener('mouseleave', () => this.handleMouseLeave());
         this.canvas.addEventListener('click', (e) => this.handleCanvasClick(e));
+
+        document.addEventListener('click', (e) => {
+            if (!window.matchMedia('(hover: none)').matches || !this.hoveredBlock) return;
+            if (this.canvas.contains(e.target) || document.getElementById('gallery-modal').contains(e.target)) return;
+            if (this.wasAutoScrollingBeforeHover) {
+                this.isAutoScrolling = true;
+                if (!this.autoScrollRunning) this.startAutoScroll();
+            }
+            this.unhighlightCategoryInText();
+            if (!this.hoveredCategory) this.removeOverlay(this.hoveredBlock);
+            this.hoveredBlock = null;
+            this.scheduleRandomPeek();
+        });
     }
 
     getCanvasPoint(e) {
@@ -497,6 +510,42 @@ class BackgroundManager {
     }
 
     handleCanvasClick(e) {
+        const isTouchLike = window.matchMedia('(hover: none)').matches;
+        if (isTouchLike) {
+            const point = this.getCanvasPoint(e);
+            const block = this.getBlockAtPoint(point, this.hoveredBlock);
+            if (block) {
+                if (this.hoveredBlock === block) {
+                    this.hoveredBlock = null;
+                    this.openGallery(block.category, block.imageIndex, block);
+                    return;
+                }
+                e.preventDefault();
+                if (this.hoveredBlock && !this.hoveredCategory) {
+                    this.removeOverlay(this.hoveredBlock);
+                }
+                this.hoveredBlock = block;
+                this.scheduleRandomPeek();
+                const wasAutoScrolling = this.isAutoScrolling;
+                if (wasAutoScrolling) this.isAutoScrolling = false;
+                this.wasAutoScrollingBeforeHover = wasAutoScrolling;
+                this.highlightCategoryInText(block.category);
+                this.showParticleOverlayForBlock(block);
+                return;
+            } else {
+                if (this.hoveredBlock) {
+                    if (this.wasAutoScrollingBeforeHover) {
+                        this.isAutoScrolling = true;
+                        if (!this.autoScrollRunning) this.startAutoScroll();
+                    }
+                    this.unhighlightCategoryInText();
+                    if (!this.hoveredCategory) this.removeOverlay(this.hoveredBlock);
+                    this.hoveredBlock = null;
+                    this.scheduleRandomPeek();
+                }
+                return;
+            }
+        }
         const block = this.getBlockAtPoint(this.getCanvasPoint(e));
         if (block) {
             this.openGallery(block.category, block.imageIndex, block);

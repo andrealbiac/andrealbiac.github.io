@@ -490,7 +490,7 @@ body {
         width: 85%;
         font-size: 19px;
         line-height: 1.6;
-        padding: 0 35px;
+        padding: 0 48px;
     }
 
     .bottom-bar {
@@ -600,7 +600,7 @@ body.gallery-open .auto-scroll-btn {
     .index-text p {
         width: 90%;
         font-size: 18px;
-        padding: 0 30px;
+        padding: 0 40px;
     }
 
     .bottom-bar {
