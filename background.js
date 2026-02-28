@@ -137,7 +137,7 @@ class BackgroundManager {
     scheduleRandomPeek() {
         if (this.peekTimeoutId) clearTimeout(this.peekTimeoutId);
         this.peekTimeoutId = null;
-        const delay = 9000 + Math.random() * 2000;
+        const delay = 3000 + Math.random() * 1500;
         this.peekTimeoutId = setTimeout(() => this.doRandomPeek(), delay);
     }
 
