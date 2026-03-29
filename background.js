@@ -9,6 +9,14 @@ const categoryColors = {
 
 const DEFAULT_BG = '#F9F2E4';
 
+/** Hash fragments that open a gallery (shareable URLs, e.g. /#web). */
+const GALLERY_ROUTE_CATEGORIES = new Set(['web', 'branding', 'motion', 'mixedmedia', 'pottery']);
+
+function categoryFromLocationHash() {
+    const raw = (window.location.hash || '').replace(/^#/, '').trim().toLowerCase();
+    return GALLERY_ROUTE_CATEGORIES.has(raw) ? raw : null;
+}
+
 const HALF_W = 7;
 const BLOCK_H = 18;
 
@@ -21,7 +29,92 @@ const projects = {
     project5: { link: 'https://x402hackathon.com', },
     project6: { link: 'https://ethglobal.com/showcase/dynos-95-9n57a', },
     project7: { link: 'https://vimeo.com/1072529410', label: 'See full video' },
+    project8: { link: 'https://estudioslapeseta.com', },
+    project9: { link: 'https://yellow-thread.com', },
 };
+
+// Featured website projects (modal list order)
+const webProjects = [
+    {
+        projectId: 'project8',
+        label: 'Estudios La Peseta',
+        description: 'Un espacio para investigar la creación de canciones y encontrar a otros con quienes compartir el proceso. Cursos y talleres de composición y producción musical.',
+        slides: ['img/web-25.png', 'img/web-26.png', 'img/web-27.png', 'img/web-28.png'],
+    },
+    {
+        projectId: 'project9',
+        label: 'Yellow Thread',
+        description: 'The craft studio dedicated to helping mission-driven brands succeed. Website for the Cape Town–based studio.',
+        slides: ['img/web-29.png', 'img/web-30.png', 'img/web-31.png', 'img/web-32.png'],
+    },
+    {
+        projectId: 'project1',
+        label: 'Hayden Malan',
+        description: 'Website portfolio for landscape architect.',
+        slides: ['img/web-2.png', 'img/web-3.png'],
+    },
+    {
+        projectId: 'project2',
+        label: 'Pear-ed',
+        description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.',
+        slides: ['img/web-5.png', 'img/web-5-1.png', 'img/web-6.png', 'img/web-7.png'],
+    },
+    {
+        projectId: 'project3',
+        label: 'Soul in the Kitchen',
+        description: 'Website for Soul in the Kitchen\'s project, that includes a recipe archive blog, a portfolio page and a manifesto.',
+        slides: ['img/web-8.png', 'img/web-9.png', 'img/web-10.png'],
+    },
+    {
+        projectId: 'project4',
+        label: 'Hambre magazine',
+        description: 'Website for Hambre magazine, an online magazine about food and culture. Illustrations by Alejando Peiro.',
+        slides: ['img/web-11.png', 'img/web-12.png', 'img/web-13.png'],
+    },
+    {
+        projectId: 'project6',
+        label: 'DynOS95',
+        description: 'UI design work for finalist project at ETHGlobal\'s London hackathon, winning Noun\'s best UX/UI implementation and Dynamic\'s best onboarding UX prizes, inspired in Windows 95 aesthetics.',
+        slides: ['img/web-21.png'],
+    },
+];
+
+function getWebProjectFocusFromGalleryIndex(startIndex) {
+    const images = galleryImages.web;
+    const img = images[startIndex];
+    if (!img || !img.projectId) return { projectIndex: 0, slideIndex: 0 };
+    const projectIndex = webProjects.findIndex((p) => p.projectId === img.projectId);
+    if (projectIndex < 0) return { projectIndex: 0, slideIndex: 0 };
+    const slides = webProjects[projectIndex].slides;
+    let slideIndex = slides.indexOf(img.src);
+    if (slideIndex < 0) slideIndex = 0;
+    return { projectIndex, slideIndex };
+}
+
+/** Match viewport height to the active slide (images are full width, height from aspect ratio). */
+function syncWebCarouselViewportHeight(carouselEl) {
+    const viewport = carouselEl.querySelector('.web-carousel-viewport');
+    const track = carouselEl.querySelector('.web-carousel-track');
+    if (!viewport || !track) return;
+    const idx = parseInt(carouselEl.dataset.currentSlide, 10) || 0;
+    const slides = track.querySelectorAll('.web-carousel-slide');
+    const slide = slides[idx];
+    if (!slide) return;
+    const img = slide.querySelector('img');
+    if (!img) {
+        viewport.style.height = '';
+        return;
+    }
+    const apply = () => {
+        const h = img.offsetHeight;
+        if (h > 0) viewport.style.height = `${h}px`;
+    };
+    if (img.complete && img.naturalHeight > 0) {
+        requestAnimationFrame(() => requestAnimationFrame(apply));
+    } else {
+        img.addEventListener('load', () => requestAnimationFrame(() => requestAnimationFrame(apply)), { once: true });
+    }
+}
 
 // Gallery images: src, label, description (optional), projectId (optional)
 const galleryImages = {
@@ -39,24 +132,28 @@ const galleryImages = {
         { src: 'img/brand-14.png', label: 'Scroll.io', description: 'Illustrations for Scroll.io website.' },
     ],
     web: [
+        { src: 'img/web-25.png', label: 'Estudios La Peseta', description: 'Un espacio para investigar la creación de canciones y encontrar a otros con quienes compartir el proceso. Cursos y talleres de composición y producción musical.', projectId: 'project8' },
+        { src: 'img/web-26.png', label: 'Estudios La Peseta', description: 'Un espacio para investigar la creación de canciones y encontrar a otros con quienes compartir el proceso. Cursos y talleres de composición y producción musical.', projectId: 'project8' },
+        { src: 'img/web-27.png', label: 'Estudios La Peseta', description: 'Un espacio para investigar la creación de canciones y encontrar a otros con quienes compartir el proceso. Cursos y talleres de composición y producción musical.', projectId: 'project8' },
+        { src: 'img/web-28.png', label: 'Estudios La Peseta', description: 'Un espacio para investigar la creación de canciones y encontrar a otros con quienes compartir el proceso. Cursos y talleres de composición y producción musical.', projectId: 'project8' },
+        { src: 'img/web-29.png', label: 'Yellow Thread', description: 'The craft studio dedicated to helping mission-driven brands succeed. Website for the Cape Town–based studio.', projectId: 'project9' },
+        { src: 'img/web-30.png', label: 'Yellow Thread', description: 'The craft studio dedicated to helping mission-driven brands succeed. Website for the Cape Town–based studio.', projectId: 'project9' },
+        { src: 'img/web-31.png', label: 'Yellow Thread', description: 'The craft studio dedicated to helping mission-driven brands succeed. Website for the Cape Town–based studio.', projectId: 'project9' },
+        { src: 'img/web-32.png', label: 'Yellow Thread', description: 'The craft studio dedicated to helping mission-driven brands succeed. Website for the Cape Town–based studio.', projectId: 'project9' },
         { src: 'img/web-2.png', label: 'Hayden Malan', description: 'Website portfolio for landscape architect.', projectId: 'project1' },
         { src: 'img/web-3.png', label: 'Hayden Malan', description: 'Website portfolio for landscape architect.', projectId: 'project1' },
+        { src: 'img/web-5.png', label: 'Pear-ed', description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.', projectId: 'project2' },
+        { src: 'img/web-5-1.png', label: 'Pear-ed', description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.', projectId: 'project2' },
+        { src: 'img/web-6.png', label: 'Pear-ed', description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.', projectId: 'project2' },
+        { src: 'img/web-7.png', label: 'Pear-ed', description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.', projectId: 'project2' },
         { src: 'img/web-8.png', label: 'Soul in the Kitchen', description: 'Website for Soul in the Kitchen\'s project, that includes a recipe archive blog, a portfolio page and a manifesto.', projectId: 'project3' },
         { src: 'img/web-9.png', label: 'Soul in the Kitchen', description: 'Website for Soul in the Kitchen\'s project, that includes a recipe archive blog, a portfolio page and a manifesto.', projectId: 'project3' },
         { src: 'img/web-10.png', label: 'Soul in the Kitchen', description: 'Website for Soul in the Kitchen\'s project, that includes a recipe archive blog, a portfolio page and a manifesto.', projectId: 'project3' },
         { src: 'img/web-11.png', label: 'Hambre magazine', description: 'Website for Hambre magazine, an online magazine about food and culture. Illustrations by Alejando Peiro.', projectId: 'project4' },
         { src: 'img/web-12.png', label: 'Hambre magazine', description: 'Website for Hambre magazine, an online magazine about food and culture. Illustrations by Alejando Peiro.', projectId: 'project4' },
         { src: 'img/web-13.png', label: 'Hambre magazine', description: 'Website for Hambre magazine, an online magazine about food and culture. Illustrations by Alejando Peiro.', projectId: 'project4' },
-        { src: 'img/web-5.png', label: 'Pear-ed', description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.', projectId: 'project2' },
-        { src: 'img/web-5-1.png', label: 'Pear-ed', description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.', projectId: 'project2' },
-        { src: 'img/web-6.png', label: 'Pear-ed', description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.', projectId: 'project2' },
-        { src: 'img/web-7.png', label: 'Pear-ed', description: 'Re-design of Pear-ed website, an art and research collaborative project around biology, botany and plant biodiversity.', projectId: 'project2' },
-        { src: 'img/web-14.png', label: 'It\'s me!', description: 'Designed and coded this website- hosted on Github Pages.' },
-        { src: 'img/web-15.png', label: 'x402 Hackathon', description: 'Website hero section, brand design and social media content for x402 Hackathon.', projectId: 'project5' },
-        { src: 'img/web-20.png', label: 'Skill map design', description: 'Experimental UX for a blockchain skill map.'},
-        { src: 'img/web-21.png', label: 'DynOS95', description: 'UI design work for finalist project at ETHGlobal\'s London hackathon, winning Noun\'s best UX/UI implementation and Dynamic\'s best onboarding UX prizes, inspired in windows 95 aesthetics.', projectId: 'project6' },
-        { src: 'img/web-23.png', label: 'Gamified learning profile', description: 'UX/UI flow design for the profile view of SpeedrunEthereum\'s learning platform, amongst others.' },
-        { src: 'img/web-24.png', label: 'Wallet app design', description: 'Burner wallet prototypes app design.'}
+        { src: 'img/web-14.png', label: 'It\'s me!', description: 'Designed and coded this website.' },
+        { src: 'img/web-21.png', label: 'DynOS95', description: 'UI design work for finalist project at ETHGlobal\'s London hackathon, winning Noun\'s best UX/UI implementation and Dynamic\'s best onboarding UX prizes, inspired in Windows 95 aesthetics.', projectId: 'project6' },
     ],
     motion: [
         { src: 'img/motion-1.gif', label: 'Ingennus', description: 'Full animation, concept and storyboard for Ingennus\' sustainability campaign, along with Tropical Studio.', projectId: 'project7' },
@@ -129,11 +226,62 @@ class BackgroundManager {
 
         this.setupCanvas();
         this.setupCategoryHoverListeners();
-        window.addEventListener('popstate', () => {
-            if (this.activeGallery) this.closeGallery(true);
-        });
+        this._galleryRouteSyncScheduled = false;
+        window.addEventListener('popstate', () => this.scheduleGalleryRouteSync());
+        window.addEventListener('hashchange', () => this.scheduleGalleryRouteSync());
+        const galleryCloseBtn = document.getElementById('gallery-close-btn');
+        if (galleryCloseBtn) {
+            galleryCloseBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (this.activeGallery) this.closeGallery();
+            });
+        }
+        this.webProjectsResizeObserver = null;
+        this.webProjectsCarouselCleanups = [];
+        this.setupGalleryNav();
         this.init();
         this.scheduleRandomPeek();
+        requestAnimationFrame(() => this.applyGalleryRouteFromUrl());
+    }
+
+    scheduleGalleryRouteSync() {
+        if (this._galleryRouteSyncScheduled) return;
+        this._galleryRouteSyncScheduled = true;
+        requestAnimationFrame(() => {
+            this._galleryRouteSyncScheduled = false;
+            this.handleGalleryHistoryChange();
+        });
+    }
+
+    handleGalleryHistoryChange() {
+        const cat = categoryFromLocationHash();
+        if (cat && cat !== this.activeGallery) {
+            this.openGallery(cat, 0, null);
+        } else if (!cat && this.activeGallery) {
+            this.closeGallery(true);
+        }
+    }
+
+    updateGalleryHistory(category, wasGalleryOpen) {
+        const path = window.location.pathname + window.location.search;
+        const next = `${path}#${category}`;
+        const urlAlreadyShowsCategory = !wasGalleryOpen && categoryFromLocationHash() === category;
+        if (!wasGalleryOpen) {
+            if (urlAlreadyShowsCategory) {
+                this.pushedStateForGallery = false;
+            } else {
+                history.pushState({ gallery: category }, '', next);
+                this.pushedStateForGallery = true;
+            }
+        } else {
+            history.replaceState({ gallery: category }, '', next);
+        }
+    }
+
+    applyGalleryRouteFromUrl() {
+        const cat = categoryFromLocationHash();
+        if (!cat) return;
+        this.openGallery(cat, 0, null);
     }
 
     scheduleRandomPeek() {
@@ -583,18 +731,361 @@ class BackgroundManager {
         }
     }
 
+    setupGalleryNav() {
+        const nav = document.getElementById('gallery-nav');
+        if (!nav) return;
+        nav.addEventListener('click', (e) => e.stopPropagation());
+        const nameLink = nav.querySelector('.gallery-nav-name');
+        if (nameLink) {
+            nameLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.closeGallery();
+            });
+        }
+        nav.querySelectorAll('.gallery-nav-link').forEach((link) => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const cat = link.getAttribute('data-category');
+                if (cat) this.openGallery(cat, 0, null);
+            });
+        });
+    }
+
+    syncGalleryNav(category) {
+        const nav = document.getElementById('gallery-nav');
+        if (!nav) return;
+        if (category) {
+            nav.hidden = false;
+            nav.querySelectorAll('.gallery-nav-link').forEach((link) => {
+                const cat = link.getAttribute('data-category');
+                const active = cat === category;
+                link.classList.toggle('is-active', active);
+                if (active) link.setAttribute('aria-current', 'page');
+                else link.removeAttribute('aria-current');
+            });
+        } else {
+            nav.hidden = true;
+            nav.querySelectorAll('.gallery-nav-link').forEach((link) => {
+                link.classList.remove('is-active');
+                link.removeAttribute('aria-current');
+            });
+        }
+    }
+
+    teardownGalleryInteractions(galleryModal) {
+        if (this.galleryKeyHandler) {
+            document.removeEventListener('keydown', this.galleryKeyHandler);
+            this.galleryKeyHandler = null;
+        }
+        if (this.galleryClickHandler) {
+            galleryModal.removeEventListener('click', this.galleryClickHandler);
+            galleryModal.removeEventListener('mousedown', this.galleryMouseDownHandler);
+            galleryModal.removeEventListener('mousemove', this.galleryMouseMoveHandler);
+            this.galleryClickHandler = null;
+            this.galleryMouseDownHandler = null;
+            this.galleryMouseMoveHandler = null;
+        }
+        if (this.galleryDraggable) {
+            this.galleryDraggable.kill();
+            this.galleryDraggable = null;
+        }
+        if (this.galleryWheelTarget && this.galleryWheelHandler) {
+            this.galleryWheelTarget.removeEventListener('wheel', this.galleryWheelHandler);
+            this.galleryWheelTarget = null;
+            this.galleryWheelHandler = null;
+        }
+        if (this.galleryDragCleanup) {
+            this.galleryDragCleanup();
+            this.galleryDragCleanup = null;
+        }
+        this.galleryGoToIndex = null;
+    }
+
+    cleanupWebProjectsContent() {
+        if (this.webProjectsResizeObserver) {
+            this.webProjectsResizeObserver.disconnect();
+            this.webProjectsResizeObserver = null;
+        }
+        this.webProjectsCarouselCleanups.forEach((fn) => fn());
+        this.webProjectsCarouselCleanups = [];
+        const grid = document.getElementById('web-projects-grid');
+        if (grid) grid.innerHTML = '';
+    }
+
+    openWebProjectsGallery(galleryModal, startIndex, fromBlock) {
+        this.cleanupWebProjectsContent();
+
+        galleryModal.classList.add('gallery-modal--web-projects');
+        galleryModal.classList.remove('motion');
+
+        const layoutClassic = document.querySelector('.gallery-layout-classic');
+        const layoutWeb = document.querySelector('.gallery-layout-web');
+        if (layoutClassic) layoutClassic.style.display = 'none';
+        if (layoutWeb) {
+            layoutWeb.style.display = 'flex';
+            layoutWeb.setAttribute('aria-hidden', 'false');
+        }
+
+        const grid = document.getElementById('web-projects-grid');
+        const focus = getWebProjectFocusFromGalleryIndex(startIndex);
+
+        webProjects.forEach((proj, pi) => {
+            const card = document.createElement('article');
+            card.className = 'web-project-card';
+            card.dataset.projectIndex = String(pi);
+
+            const headerRow = document.createElement('div');
+            headerRow.className = 'web-project-header';
+
+            const titleEl = document.createElement('h3');
+            titleEl.className = 'web-project-title';
+            titleEl.textContent = proj.label;
+
+            const projMeta = projects[proj.projectId];
+            const visit = document.createElement('a');
+            visit.href = projMeta.link;
+            visit.target = '_blank';
+            visit.rel = 'noopener';
+            visit.className = 'web-project-visit';
+            visit.textContent = 'Visit Site';
+
+            headerRow.appendChild(titleEl);
+            headerRow.appendChild(visit);
+
+            const descEl = document.createElement('p');
+            descEl.className = 'web-project-desc';
+            descEl.textContent = proj.description;
+
+            const carousel = document.createElement('div');
+            carousel.className = 'web-project-carousel';
+            carousel.dataset.currentSlide = '0';
+
+            const viewport = document.createElement('div');
+            viewport.className = 'web-carousel-viewport';
+
+            const track = document.createElement('div');
+            track.className = 'web-carousel-track';
+
+            proj.slides.forEach((src) => {
+                const slide = document.createElement('div');
+                slide.className = 'web-carousel-slide';
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = proj.label;
+                img.draggable = false;
+                img.addEventListener('dragstart', (e) => e.preventDefault());
+                img.addEventListener('load', () => syncWebCarouselViewportHeight(carousel));
+                slide.appendChild(img);
+                track.appendChild(slide);
+            });
+
+            viewport.appendChild(track);
+            viewport.setAttribute('role', 'button');
+            viewport.setAttribute('tabindex', '0');
+            viewport.setAttribute(
+                'aria-label',
+                `${proj.label} — click image for next slide`
+            );
+
+            carousel.appendChild(viewport);
+
+            const copyCol = document.createElement('div');
+            copyCol.className = 'web-project-copy';
+            copyCol.appendChild(headerRow);
+            copyCol.appendChild(descEl);
+            card.appendChild(copyCol);
+            card.appendChild(carousel);
+
+            grid.appendChild(card);
+
+            const nSlides = proj.slides.length;
+            let slideIndex = pi === focus.projectIndex ? focus.slideIndex : 0;
+            slideIndex = ((slideIndex % nSlides) + nSlides) % nSlides;
+            carousel.dataset.currentSlide = String(slideIndex);
+
+            const applySlide = (animated) => {
+                const w = viewport.offsetWidth;
+                const x = -slideIndex * w;
+                gsap.killTweensOf(track);
+                carousel.dataset.currentSlide = String(slideIndex);
+                const afterMove = () => syncWebCarouselViewportHeight(carousel);
+                if (animated) {
+                    gsap.to(track, {
+                        x,
+                        duration: 0.45,
+                        ease: 'power2.inOut',
+                        onComplete: afterMove,
+                    });
+                } else {
+                    gsap.set(track, { x });
+                    afterMove();
+                }
+            };
+
+            let lastAdvanceAt = 0;
+            const goNext = () => {
+                const now = Date.now();
+                if (now - lastAdvanceAt < 380) return;
+                lastAdvanceAt = now;
+                slideIndex = (slideIndex + 1 + nSlides) % nSlides;
+                applySlide(true);
+            };
+
+            const onViewportClick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                goNext();
+            };
+            viewport.addEventListener('click', onViewportClick);
+
+            const onViewportKey = (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    goNext();
+                }
+            };
+            viewport.addEventListener('keydown', onViewportKey);
+
+            let touchStartX = 0;
+            let touchMoved = false;
+            const onTouchStart = (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchMoved = false;
+            };
+            const onTouchMove = (e) => {
+                if (touchMoved) return;
+                const dx = e.touches[0].clientX - touchStartX;
+                if (Math.abs(dx) > 40) touchMoved = true;
+            };
+            const onTouchEnd = (e) => {
+                if (touchMoved) {
+                    const dx = e.changedTouches[0].clientX - touchStartX;
+                    if (Math.abs(dx) > 48) {
+                        slideIndex = (slideIndex + (dx < 0 ? 1 : -1) + nSlides) % nSlides;
+                        applySlide(true);
+                    }
+                    touchMoved = false;
+                    return;
+                }
+                goNext();
+                touchMoved = false;
+            };
+            viewport.addEventListener('touchstart', onTouchStart, { passive: true });
+            viewport.addEventListener('touchmove', onTouchMove, { passive: true });
+            viewport.addEventListener('touchend', onTouchEnd);
+
+            this.webProjectsCarouselCleanups.push(() => {
+                viewport.removeEventListener('click', onViewportClick);
+                viewport.removeEventListener('keydown', onViewportKey);
+                viewport.removeEventListener('touchstart', onTouchStart);
+                viewport.removeEventListener('touchmove', onTouchMove);
+                viewport.removeEventListener('touchend', onTouchEnd);
+                gsap.killTweensOf(track);
+            });
+
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => applySlide(false));
+            });
+        });
+
+        if (!this.webProjectsResizeObserver) {
+            this.webProjectsResizeObserver = new ResizeObserver(() => {
+                grid.querySelectorAll('.web-project-carousel').forEach((carouselEl) => {
+                    const vp = carouselEl.querySelector('.web-carousel-viewport');
+                    const tr = carouselEl.querySelector('.web-carousel-track');
+                    if (!vp || !tr) return;
+                    const idx = parseInt(carouselEl.dataset.currentSlide, 10) || 0;
+                    const w = vp.offsetWidth;
+                    gsap.set(tr, { x: -idx * w });
+                    syncWebCarouselViewportHeight(carouselEl);
+                });
+            });
+        }
+        this.webProjectsResizeObserver.observe(grid);
+
+        const clickHandler = (e) => {
+            if (e.target.closest('.gallery-close-btn')) {
+                this.closeGallery();
+                return;
+            }
+            if (e.target.closest('#gallery-nav')) return;
+            if (e.target.closest('.web-project-card')) return;
+            this.closeGallery();
+        };
+        galleryModal.addEventListener('click', clickHandler);
+        this.galleryClickHandler = clickHandler;
+
+        document.body.classList.add('gallery-open');
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+        galleryModal.style.display = 'flex';
+        galleryModal.style.opacity = '1';
+        galleryModal.style.visibility = 'visible';
+
+        gsap.set('.web-project-card', { opacity: 0, y: 12 });
+        gsap.to('.web-project-card', {
+            opacity: 1,
+            y: 0,
+            duration: 0.95,
+            stagger: 0.14,
+            ease: 'power2.out',
+            delay: 0.22,
+        });
+
+        const focusedCard = grid.querySelector(`.web-project-card[data-project-index="${focus.projectIndex}"]`);
+        if (focusedCard) {
+            requestAnimationFrame(() => {
+                focusedCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            });
+        }
+
+        if (fromBlock) {
+            const grad = document.createElement('div');
+            grad.className = 'gallery-open-gradient';
+            grad.style.cssText =
+                'position:fixed;inset:0;z-index:1005;pointer-events:none;background:radial-gradient(ellipse at center, rgba(255,255,255,0.5) 0%, transparent 60%);';
+            document.body.appendChild(grad);
+            galleryModal.style.opacity = '0';
+            gsap.to(galleryModal, { opacity: 1, duration: 0.65, ease: 'power2.out' });
+            gsap.to(grad, { opacity: 0, duration: 0.55, delay: 0.35, onComplete: () => grad.remove() });
+        } else {
+            gsap.fromTo(galleryModal, { opacity: 0 }, { opacity: 1, duration: 0.65, ease: 'power2.out' });
+        }
+    }
+
     openGallery(category, startIndex = 0, fromBlock = null) {
+        if (category !== 'web') {
+            const imgs = galleryImages[category];
+            if (!imgs || !imgs.length) return;
+        }
+
+        const wasGalleryOpen = document.body.classList.contains('gallery-open');
+        this.updateGalleryHistory(category, wasGalleryOpen);
+
         this.activeGallery = category;
         this.hoveredCategory = null;
         this.hideAllParticleOverlays();
 
-        if (window.matchMedia('(max-width: 768px)').matches) {
-            const url = window.location.pathname + window.location.search + '#gallery';
-            history.pushState({ gallery: category }, '', url);
-            this.pushedStateForGallery = true;
+        const galleryModal = document.getElementById('gallery-modal');
+        this.teardownGalleryInteractions(galleryModal);
+        this.syncGalleryNav(category);
+        if (category === 'web') {
+            this.openWebProjectsGallery(galleryModal, startIndex, fromBlock);
+            return;
         }
 
-        const galleryModal = document.getElementById('gallery-modal');
+        this.cleanupWebProjectsContent();
+        galleryModal.classList.remove('gallery-modal--web-projects');
+        const layoutClassic = document.querySelector('.gallery-layout-classic');
+        const layoutWeb = document.querySelector('.gallery-layout-web');
+        if (layoutClassic) layoutClassic.style.display = '';
+        if (layoutWeb) {
+            layoutWeb.style.display = 'none';
+            layoutWeb.setAttribute('aria-hidden', 'true');
+        }
+
         const centerWrap = document.querySelector('.gallery-center-image');
         const thumbsContainer = document.querySelector('.gallery-thumbs');
         const titleEl = document.querySelector('.gallery-title');
@@ -721,6 +1212,11 @@ class BackgroundManager {
         this.galleryGoToIndex = goToIndex;
 
         const clickHandler = (e) => {
+            if (e.target.closest('.gallery-close-btn')) {
+                this.closeGallery();
+                return;
+            }
+            if (e.target.closest('#gallery-nav')) return;
             if (e.target.closest('.gallery-thumbs') || e.target.closest('.visit-site-btn')) return;
             if (e.target.closest('.gallery-header') && e.target.tagName !== 'A') return;
             if (e.target.closest('.gallery-center-image img')) return;
@@ -743,41 +1239,22 @@ class BackgroundManager {
             grad.style.cssText = 'position:fixed;inset:0;z-index:1005;pointer-events:none;background:radial-gradient(ellipse at center, rgba(255,255,255,0.5) 0%, transparent 60%);';
             document.body.appendChild(grad);
             galleryModal.style.opacity = '0';
-            gsap.to(galleryModal, { opacity: 1, duration: 0.35, ease: 'power2.out' });
-            gsap.to(grad, { opacity: 0, duration: 0.4, delay: 0.2, onComplete: () => grad.remove() });
+            gsap.to(galleryModal, { opacity: 1, duration: 0.65, ease: 'power2.out' });
+            gsap.to(grad, { opacity: 0, duration: 0.55, delay: 0.35, onComplete: () => grad.remove() });
         } else {
-            gsap.fromTo(galleryModal, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' });
+            gsap.fromTo(galleryModal, { opacity: 0 }, { opacity: 1, duration: 0.65, ease: 'power2.out' });
         }
     }
 
     closeGallery(fromPopstate = false) {
+        if (!fromPopstate && this.pushedStateForGallery) {
+            this.pushedStateForGallery = false;
+            history.back();
+            return;
+        }
+
         const galleryModal = document.getElementById('gallery-modal');
-        if (this.galleryKeyHandler) {
-            document.removeEventListener('keydown', this.galleryKeyHandler);
-            this.galleryKeyHandler = null;
-        }
-        if (this.galleryClickHandler) {
-            galleryModal.removeEventListener('click', this.galleryClickHandler);
-            galleryModal.removeEventListener('mousedown', this.galleryMouseDownHandler);
-            galleryModal.removeEventListener('mousemove', this.galleryMouseMoveHandler);
-            this.galleryClickHandler = null;
-            this.galleryMouseDownHandler = null;
-            this.galleryMouseMoveHandler = null;
-        }
-        if (this.galleryDraggable) {
-            this.galleryDraggable.kill();
-            this.galleryDraggable = null;
-        }
-        if (this.galleryWheelTarget && this.galleryWheelHandler) {
-            this.galleryWheelTarget.removeEventListener('wheel', this.galleryWheelHandler);
-            this.galleryWheelTarget = null;
-            this.galleryWheelHandler = null;
-        }
-        if (this.galleryDragCleanup) {
-            this.galleryDragCleanup();
-            this.galleryDragCleanup = null;
-        }
-        this.galleryGoToIndex = null;
+        this.teardownGalleryInteractions(galleryModal);
 
         this.hoveredBlock = null;
         this.hoveredCategory = null;
@@ -788,7 +1265,7 @@ class BackgroundManager {
         document.body.classList.remove('gallery-open');
         gsap.to(galleryModal, {
             opacity: 0,
-            duration: 0.3,
+            duration: 0.5,
             ease: 'power2.out',
             onComplete: () => {
                 galleryModal.style.display = 'none';
@@ -797,14 +1274,24 @@ class BackgroundManager {
                 document.documentElement.style.overflow = '';
                 document.body.style.overflow = '';
                 this.activeGallery = null;
+                this.cleanupWebProjectsContent();
+                galleryModal.classList.remove('gallery-modal--web-projects');
+                const layoutClassic = document.querySelector('.gallery-layout-classic');
+                const layoutWeb = document.querySelector('.gallery-layout-web');
+                if (layoutClassic) layoutClassic.style.display = '';
+                if (layoutWeb) {
+                    layoutWeb.style.display = 'none';
+                    layoutWeb.setAttribute('aria-hidden', 'true');
+                }
                 this.isAutoScrolling = true;
                 if (!this.autoScrollRunning) {
                     this.startAutoScroll();
                 }
-                if (!fromPopstate && this.pushedStateForGallery) {
-                    history.back();
+                if (!fromPopstate && categoryFromLocationHash()) {
+                    history.replaceState(null, '', window.location.pathname + window.location.search);
                 }
                 this.pushedStateForGallery = false;
+                this.syncGalleryNav(null);
             }
         });
     }

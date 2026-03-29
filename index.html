@@ -27,7 +27,7 @@
             <img src="img/sun.svg" alt="Auto Scroll" class="sun-icon">
         </button>
         <div class="index-text">
-            <p><span class="dim-text">Hey! I'm </span><span class="name-highlight-static dim-text">Andrea Albiac</span><span class="dim-text">, a </span><span class="name-highlight dim-text">graphic designer</span><span class="dim-text"> based in Amsterdam. I design </span><a href="#" class="category-link" data-category="branding">branding</a><span class="dim-text"> and make </span><a href="#" class="category-link" data-category="web">websites</a><span class="dim-text"> for clients and friends, 2D </span><a href="#" class="category-link" data-category="motion">motion&nbsp;graphics</a><span class="dim-text">, sometimes </span><a href="#" class="category-link" data-category="mixedmedia">mixed&nbsp;media&nbsp;animation</a><span class="dim-text">. I also make </span><a href="#" class="category-link" data-category="pottery">pottery&nbsp;chairs</a><span class="dim-text"> whenever I get the chance. See more on </span><a href="https://instagram.com/andrea.albiac" target="_blank" class="dim-text">Instagram.</a></p>
+            <p><span class="dim-text">Hey! I'm </span><span class="name-highlight-static dim-text">Andrea Albiac</span><span class="dim-text">, a </span><span class="name-highlight dim-text">graphic designer</span><span class="dim-text"> based in Amsterdam. I design </span><a href="#branding" class="category-link" data-category="branding">branding</a><span class="dim-text"> and make </span><a href="#web" class="category-link" data-category="web">websites</a><span class="dim-text"> for clients and friends, 2D </span><a href="#motion" class="category-link" data-category="motion">motion&nbsp;graphics</a><span class="dim-text">, sometimes </span><a href="#mixedmedia" class="category-link" data-category="mixedmedia">mixed&nbsp;media&nbsp;animation</a><span class="dim-text">. I also make </span><a href="#pottery" class="category-link" data-category="pottery">pottery&nbsp;chairs</a><span class="dim-text"> whenever I get the chance. See more on </span><a href="https://instagram.com/andrea.albiac" target="_blank" class="dim-text">Instagram.</a></p>
         </div>
         <div class="bottom-bar">
             <span class="portfolio-note">Extended portfolio upon request.</span>
@@ -39,19 +39,39 @@
 
         <!-- Gallery Modal -->
         <div id="gallery-modal" class="gallery-modal">
-            <button type="button" class="gallery-close-btn" id="gallery-close-btn" aria-label="Close gallery">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
-            <div class="gallery-header">
-                <h2 class="gallery-title"></h2>
-                <p class="gallery-description"></p>
-                <a href="#" target="_blank" rel="noopener" class="visit-site-btn" id="visit-site-btn" style="display: none;">Visit site</a>
-            </div>
-            <div class="gallery-body">
-                <div class="gallery-main">
-                    <div class="gallery-center-image"></div>
+            <nav class="gallery-nav" id="gallery-nav" aria-label="Portfolio sections" hidden>
+                <div class="gallery-nav-inner">
+                    <a href="./" class="gallery-nav-name">andrea albiac</a>
+                    <span class="gallery-nav-dot" aria-hidden="true">.</span>
+                    <a href="#web" class="gallery-nav-link" data-category="web">websites</a>
+                    <span class="gallery-nav-dot" aria-hidden="true">.</span>
+                    <a href="#branding" class="gallery-nav-link" data-category="branding">branding</a>
+                    <span class="gallery-nav-dot" aria-hidden="true">.</span>
+                    <a href="#motion" class="gallery-nav-link" data-category="motion">motion</a>
+                    <span class="gallery-nav-dot" aria-hidden="true">.</span>
+                    <a href="#pottery" class="gallery-nav-link" data-category="pottery">pottery</a>
                 </div>
-                <div class="gallery-thumbs"></div>
+            </nav>
+            <button type="button" class="gallery-close-btn" id="gallery-close-btn" aria-label="Back">
+                <img src="img/sun.svg" alt="" class="sun-icon">
+            </button>
+            <div class="gallery-layout-classic">
+                <div class="gallery-body">
+                    <div class="gallery-main">
+                        <div class="gallery-center-image"></div>
+                    </div>
+                    <div class="gallery-thumbs"></div>
+                </div>
+                <div class="gallery-header">
+                    <h2 class="gallery-title"></h2>
+                    <p class="gallery-description"></p>
+                    <a href="#" target="_blank" rel="noopener" class="visit-site-btn" id="visit-site-btn" style="display: none;">Visit site</a>
+                </div>
+            </div>
+            <div class="gallery-layout-web" aria-hidden="true">
+                <div class="web-projects-scroll">
+                    <div class="web-projects-grid" id="web-projects-grid"></div>
+                </div>
             </div>
         </div>
     </body>
