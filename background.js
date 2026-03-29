@@ -116,6 +116,72 @@ function syncWebCarouselViewportHeight(carouselEl) {
     }
 }
 
+const WEB_VISIT_ARROW_SVG =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 28 28" fill="none" aria-hidden="true">' +
+    '<path d="M7.5 20.5L20 8M20 8h-5M20 8v5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '</svg>';
+
+function setupWebProjectVisitLink(visit) {
+    const label = visit.querySelector('.web-project-visit-label');
+    if (!label) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const fineHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    const labelEase = 'sine.inOut';
+    const labelOpenDur = 0.52;
+    const labelCloseDur = 0.48;
+
+    if (reduceMotion || !fineHover) {
+        gsap.set(label, { maxWidth: 200, opacity: 1, marginRight: 8 });
+        return;
+    }
+
+    gsap.set(label, { maxWidth: 0, opacity: 0, marginRight: 0 });
+
+    const show = () => {
+        gsap.killTweensOf(label);
+        gsap.to(label, {
+            maxWidth: 160,
+            opacity: 1,
+            marginRight: 8,
+            duration: labelOpenDur,
+            ease: labelEase,
+        });
+    };
+
+    const hideCore = () => {
+        gsap.killTweensOf(label);
+        gsap.to(label, {
+            maxWidth: 0,
+            opacity: 0,
+            marginRight: 0,
+            duration: labelCloseDur,
+            ease: labelEase,
+        });
+    };
+
+    const tryHide = () => {
+        requestAnimationFrame(() => {
+            if (document.activeElement === visit) return;
+            if (visit.matches(':hover')) return;
+            hideCore();
+        });
+    };
+
+    visit.addEventListener('mouseenter', show);
+    visit.addEventListener('mouseleave', tryHide);
+    visit.addEventListener('focusin', show);
+    visit.addEventListener('focusout', (e) => {
+        if (visit.contains(e.relatedTarget)) return;
+        requestAnimationFrame(() => {
+            if (document.activeElement === visit) return;
+            if (visit.matches(':hover')) return;
+            hideCore();
+        });
+    });
+}
+
 // Gallery images: src, label, description (optional), projectId (optional)
 const galleryImages = {
     branding: [
@@ -849,7 +915,16 @@ class BackgroundManager {
             visit.target = '_blank';
             visit.rel = 'noopener';
             visit.className = 'web-project-visit';
-            visit.textContent = 'Visit Site';
+            visit.setAttribute('aria-label', 'Visit site');
+            const visitLabel = document.createElement('span');
+            visitLabel.className = 'web-project-visit-label';
+            visitLabel.textContent = 'Visit site';
+            const visitArrow = document.createElement('span');
+            visitArrow.className = 'web-project-visit-arrow';
+            visitArrow.innerHTML = WEB_VISIT_ARROW_SVG;
+            visit.appendChild(visitLabel);
+            visit.appendChild(visitArrow);
+            setupWebProjectVisitLink(visit);
 
             headerRow.appendChild(titleEl);
             headerRow.appendChild(visit);
