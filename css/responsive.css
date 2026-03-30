@@ -1,0 +1,327 @@
+/* =============================================================================
+   Media queries
+   ============================================================================= */
+
+@media (hover: hover) {
+    .bottom-bar:hover .portfolio-note {
+        opacity: 1;
+        max-width: 300px;
+        margin-right: 1.25rem;
+    }
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .gallery-thumb:hover {
+        transform: translateX(-4px);
+    }
+
+    .web-carousel-viewport {
+        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M4 10h10M12 6l4 4-4 4' fill='none' stroke='%232D1810' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+                15 10,
+            pointer;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .bottom-bar.mobile-expanded .portfolio-note {
+        opacity: 1;
+        max-width: 300px;
+        margin-right: 1rem;
+    }
+
+    .gallery-layout-web {
+        padding: 0;
+    }
+
+    .gallery-nav {
+        padding: 14px 78px 72px 16px;
+        background: linear-gradient(
+            to bottom,
+            #F9F2E4 0%,
+            #F9F2E4 30%,
+            rgba(249, 242, 228, 0.88) 50%,
+            rgba(249, 242, 228, 0.26) 78%,
+            rgba(249, 242, 228, 0) 100%
+        );
+    }
+
+    .gallery-nav-inner {
+        font-size: 16px;
+        line-height: 1.4;
+    }
+
+    .gallery-header {
+        max-width: min(40rem, calc(100% - 32px));
+        padding: 12px 16px calc(20px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .web-projects-scroll {
+        padding: 98px 18px 72px;
+    }
+
+    .web-projects-grid {
+        gap: 56px;
+        max-width: none;
+        padding: 24px 0 0;
+    }
+
+    .web-projects-grid--two-col {
+        grid-template-columns: 1fr;
+    }
+
+    .web-project-card {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+    }
+
+    /* Websites + motion: tighter stack under landscape frames */
+    .web-project-card:not(.web-project-card--vertical) {
+        gap: 12px;
+    }
+
+    .web-project-card--vertical {
+        align-items: stretch;
+    }
+
+    /* Motion / websites: full-width images use contain (no crop); a bit taller so 16:9-ish frames sit close to the edges */
+    .web-project-carousel {
+        flex: none;
+        width: 100%;
+        align-self: stretch;
+        min-height: clamp(200px, 58vw, 320px);
+        height: clamp(200px, 58vw, 320px);
+    }
+
+    /* Branding / mixed media: large square frame (~full width) so copy stays a fixed 16px below the viewport, not far under letterboxing */
+    .web-project-carousel.web-project-carousel--vertical {
+        max-width: none;
+        width: 100%;
+        min-height: min(96vw, 520px);
+        height: min(96vw, 520px);
+    }
+
+    /* Websites + motion: image above copy */
+    .web-project-card:not(.web-project-card--vertical) .web-project-carousel {
+        order: -1;
+    }
+
+    .web-project-copy {
+        flex: none;
+        max-width: none;
+        min-width: 0;
+        width: 100%;
+    }
+
+    .web-project-desc {
+        margin-bottom: 0;
+    }
+
+    /* Slides flush with scroll padding; same content width as text */
+    .web-carousel-slide,
+    .web-project-carousel--vertical .web-carousel-slide {
+        justify-content: center;
+        align-items: flex-start;
+        padding: 0;
+    }
+
+    .web-project-card .web-carousel-slide img {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        object-position: center;
+        display: block;
+        filter: none !important;
+    }
+
+    /* Branding + mixed media: same contain framing inside the square */
+    .web-project-card--vertical .web-carousel-slide img {
+        object-fit: contain;
+        object-position: center;
+    }
+
+    /* No hover-based dimming: title, body, and link stay fully readable */
+    .web-project-title,
+    .web-project-desc,
+    .web-project-visit {
+        opacity: 1;
+    }
+
+    .gallery-close-btn {
+        top: 15px;
+        right: 15px;
+        padding: 8px;
+    }
+
+    .index-text {
+        padding: 0 28px;
+        box-sizing: border-box;
+    }
+
+    .index-text p {
+        width: 85%;
+        font-size: 19px;
+        line-height: 1.6;
+        padding: 0 56px;
+    }
+
+    .bottom-bar {
+        bottom: 30px;
+        gap: 1rem;
+    }
+
+    .get-in-touch-btn {
+        font-size: 14px;
+    }
+
+    .portfolio-note {
+        font-size: 15px;
+    }
+
+    .auto-scroll-btn {
+        top: 15px;
+        right: 15px;
+        padding: 8px;
+    }
+
+    .sun-icon {
+        width: 44px;
+        height: 44px;
+    }
+
+    .gallery-body {
+        flex-direction: column;
+        padding: calc(110px + 8vh) 16px 16px;
+        justify-content: flex-start;
+    }
+
+    .gallery-center-image,
+    .gallery-center-image img {
+        max-height: 56vh;
+    }
+
+    .gallery-modal.motion .gallery-center-image img,
+    .gallery-modal.motion .gallery-thumb img {
+        max-height: 40vh;
+    }
+
+    .gallery-thumbs {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        max-height: 120px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        width: 100%;
+        justify-content: center;
+        align-self: center;
+        align-items: flex-end;
+        align-content: flex-end;
+        margin-top: auto;
+        max-width: 100%;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .gallery-thumb {
+        max-width: 70px;
+    }
+
+    .gallery-thumb img {
+        max-width: 70px;
+        max-height: 60px;
+    }
+
+    .particle-hover-image {
+        max-width: 180px;
+        max-height: 180px;
+    }
+
+    .particle-hover-image[src*="brand-15"] {
+        max-width: 130px;
+        max-height: 130px;
+    }
+
+    .gallery-header {
+        max-width: 70%;
+    }
+
+    .gallery-title {
+        font-size: 24px;
+    }
+
+    .gallery-description {
+        font-size: 18px;
+        margin-top: 8px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .index-text {
+        padding: 0 24px;
+        box-sizing: border-box;
+    }
+
+    .index-text p {
+        width: 90%;
+        font-size: 18px;
+        padding: 0 48px;
+    }
+
+    .bottom-bar {
+        bottom: 25px;
+        gap: 0.75rem;
+    }
+
+    .get-in-touch-btn {
+        font-size: 13px;
+    }
+
+    .portfolio-note {
+        font-size: 14px;
+    }
+
+    .auto-scroll-btn {
+        top: 12px;
+        right: 12px;
+        padding: 6px;
+    }
+
+    .gallery-close-btn {
+        top: 12px;
+        right: 12px;
+        padding: 6px;
+    }
+
+    .sun-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .gallery-thumb img {
+        max-width: 60px;
+        max-height: 50px;
+    }
+
+    .particle-hover-image {
+        max-width: 158px;
+        max-height: 158px;
+    }
+
+    .particle-hover-image[src*="brand-15"] {
+        max-width: 114px;
+        max-height: 114px;
+    }
+
+    .gallery-header {
+        max-width: 85%;
+    }
+
+    .gallery-title {
+        font-size: 22px;
+    }
+
+    .gallery-description {
+        font-size: 17px;
+    }
+}

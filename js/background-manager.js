@@ -1,165 +1,3 @@
-// Category colors: purple, orange, pink, light blue, blue, soft brown
-const categoryColors = {
-    branding: '#BD9EFF',    // purple
-    web: '#FF9D47',         // orange
-    motion: '#FB7CA6',      // pink
-    mixedmedia: '#7EB5E8',  // blue
-    pottery: '#A4754C'      // soft brown
-};
-
-const DEFAULT_BG = '#F9F2E4';
-
-/** Hash fragments that open a gallery (shareable URLs, e.g. /#web). */
-const GALLERY_ROUTE_CATEGORIES = new Set(['web', 'branding', 'motion', 'mixedmedia', 'pottery']);
-
-function categoryFromLocationHash() {
-    const raw = (window.location.hash || '').replace(/^#/, '').trim().toLowerCase();
-    return GALLERY_ROUTE_CATEGORIES.has(raw) ? raw : null;
-}
-
-const HALF_W = 7;
-const BLOCK_H = 18;
-
-// Projects with site links (assign projectId to images that link to these)
-const projects = {
-    project1: { link: 'https://haydenmalan.nl', },
-    project2: { link: 'https://pear-ed.org', },
-    project3: { link: 'https://soulinthekitchen.com', },
-    project4: { link: 'https://hambremagazine.com', },
-    project5: { link: 'https://x402hackathon.com', },
-    project6: { link: 'https://ethglobal.com/showcase/dynos-95-9n57a', },
-    project7: { link: 'https://vimeo.com/1072529410', label: 'See full video' },
-    project8: { link: 'https://estudioslapeseta.com', },
-    project9: { link: 'https://yellow-thread.com', },
-};
-
-// Featured website projects (modal list order)
-const webProjects = [
-    {
-        projectId: 'project8',
-        label: 'La Peseta',
-        description:
-            'Design and development of a website for a music teacher that offers courses on Song-making and Musical Production. Different elements of the website encourage you to move things, interact with it and play music, evoking a playful headspace.',
-        slides: ['img/web-25.png', 'img/web-26.png', 'img/web-27.png', 'img/web-28.png'],
-    },
-    {
-        projectId: 'project9',
-        label: 'Yellow Thread',
-        description:
-            'Design and development for Yellow Thread, a craft studio that make props, shootings and atrezzo for brands. The website works as a simple, linear catalog of their work, grouped into categories that flow as the gallery advances.',
-        slides: ['img/web-29.png', 'img/web-30.png', 'img/web-31.png', 'img/web-32.png'],
-    },
-    {
-        projectId: 'project1',
-        label: 'Hayden malan',
-        description:
-            'For this landscape architectural portfolio, we wanted to create a playful environment where users can browse through maps. The projects were grouped into four categories that slide in from the side like archive folders on top of them. The website was fully coded, with the help of vibe coding. It involved API map embedding, and since the practice is spread between Cape Town and Amsterdam, we came up with a system of anchor tags to make it easier to jump from one place to the other.',
-        slides: ['img/web-2.png', 'img/web-3.png'],
-    },
-    {
-        projectId: 'project2',
-        label: 'Pear_ed',
-        description:
-            'Website for Pear_ed, a botanical art and research project. The site holds their artworks and a map with the cuttings locations, enabling a space that supports exploration, discovery and ongoing documentation.',
-        slides: ['img/web-5.png', 'img/web-5-1.png', 'img/web-6.png', 'img/web-7.png'],
-    },
-    {
-        projectId: 'project3',
-        label: 'Soul in the kitchen',
-        description:
-            'Claudia Polo—the woman behind this project—is passionate about how a conscious meal can change the way we relate to food, ourselves, and our environment. As she was growing on social media and writing a book, she asked me to define her brand and create a website that would serve as a portfolio, a recipe book for her followers, and a manifesto.',
-        slides: ['img/web-8.png', 'img/web-9.png', 'img/web-10.png'],
-    },
-    {
-        projectId: 'project4',
-        label: 'Hambre magazine',
-        description:
-            'Hambre (Hunger) magazine is a secondary brand of Soul in the Kitchen, a collaborative and online magazine about food-related narratives.',
-        slides: ['img/web-11.png', 'img/web-12.png', 'img/web-13.png'],
-    },
-    {
-        projectId: 'project6',
-        label: 'DynOS95',
-        description: 'UI design work for finalist project at ETHGlobal\'s London hackathon, winning Noun\'s best UX/UI implementation and Dynamic\'s best onboarding UX prizes, inspired in Windows 95 aesthetics.',
-        slides: ['img/web-21.png'],
-    },
-];
-
-function getWebProjectFocusFromGalleryIndex(startIndex) {
-    const images = galleryImages.web;
-    const img = images[startIndex];
-    if (!img || !img.projectId) return { projectIndex: 0, slideIndex: 0 };
-    const projectIndex = webProjects.findIndex((p) => p.projectId === img.projectId);
-    if (projectIndex < 0) return { projectIndex: 0, slideIndex: 0 };
-    const slides = webProjects[projectIndex].slides;
-    let slideIndex = slides.indexOf(img.src);
-    if (slideIndex < 0) slideIndex = 0;
-    return { projectIndex, slideIndex };
-}
-
-// Gallery images: src, label, description (optional), projectId (optional)
-const galleryImages = {
-    branding: [
-        { src: 'img/brand-1.png', label: 'Soul in the Kitchen', description: 'Visual identity and illustrations for Soul in the Kitchen, a conscious food advocate, content creator and author.' },
-        { src: 'img/brand-2.png', label: 'Soul in the Kitchen', description: 'Visual identity and illustrations for Soul in the Kitchen, a conscious food advocate, content creator and author.' },
-        { src: 'img/brand-3.png', label: 'Soul in the Kitchen', description: 'Visual identity and illustrations for Soul in the Kitchen, a conscious food advocate, content creator and author.' },
-        { src: 'img/brand-4.gif', label: 'Soul in the Kitchen', description: 'Visual identity and illustrations for Soul in the Kitchen, a conscious food advocate, content creator and author.' },
-        { src: 'img/brand-5.png', label: 'Hambre magazine', description: 'Logo and brand for online magazine' },
-        { src: 'img/brand-6.png', label: 'Tame your gut', description: 'Social media assets and brand for Tame your gut, a health coach and content creator.' },
-        { src: 'img/brand-8.png', label: 'BuidlGuidl', description: 'Brand assets, merchandise and illustrations for BuidGuidl, an Ethereum community and blockchain education platform.' },
-        { src: 'img/brand-9.png', label: 'BuidlGuidl', description: 'Brand assets, merchandise and illustrations for BuidGuidl, an Ethereum community and blockchain education platform.' },
-        { src: 'img/brand-10.png', label: 'BuidlGuidl', description: 'Brand assets, merchandise and illustrations for BuidGuidl, an Ethereum community and blockchain education platform.' },
-        { src: 'img/brand-11.png', label: 'Illustration sketch', description: 'Sketch for BuidlGuidl\'s hero illustration.' },
-        { src: 'img/brand-14.png', label: 'Scroll.io', description: 'Illustrations for Scroll.io website.' },
-    ],
-    web: [
-        { src: 'img/web-25.png', label: 'La Peseta', description: 'Design and development of a website for a music teacher that offers courses on Song-making and Musical Production. Different elements of the website encourage you to move things, interact with it and play music, evoking a playful headspace.', projectId: 'project8' },
-        { src: 'img/web-26.png', label: 'La Peseta', description: 'Design and development of a website for a music teacher that offers courses on Song-making and Musical Production. Different elements of the website encourage you to move things, interact with it and play music, evoking a playful headspace.', projectId: 'project8' },
-        { src: 'img/web-27.png', label: 'La Peseta', description: 'Design and development of a website for a music teacher that offers courses on Song-making and Musical Production. Different elements of the website encourage you to move things, interact with it and play music, evoking a playful headspace.', projectId: 'project8' },
-        { src: 'img/web-28.png', label: 'La Peseta', description: 'Design and development of a website for a music teacher that offers courses on Song-making and Musical Production. Different elements of the website encourage you to move things, interact with it and play music, evoking a playful headspace.', projectId: 'project8' },
-        { src: 'img/web-29.png', label: 'Yellow Thread', description: 'Design and development for Yellow Thread, a craft studio that make props, shootings and atrezzo for brands. The website works as a simple, linear catalog of their work, grouped into categories that flow as the gallery advances.', projectId: 'project9' },
-        { src: 'img/web-30.png', label: 'Yellow Thread', description: 'Design and development for Yellow Thread, a craft studio that make props, shootings and atrezzo for brands. The website works as a simple, linear catalog of their work, grouped into categories that flow as the gallery advances.', projectId: 'project9' },
-        { src: 'img/web-31.png', label: 'Yellow Thread', description: 'Design and development for Yellow Thread, a craft studio that make props, shootings and atrezzo for brands. The website works as a simple, linear catalog of their work, grouped into categories that flow as the gallery advances.', projectId: 'project9' },
-        { src: 'img/web-32.png', label: 'Yellow Thread', description: 'Design and development for Yellow Thread, a craft studio that make props, shootings and atrezzo for brands. The website works as a simple, linear catalog of their work, grouped into categories that flow as the gallery advances.', projectId: 'project9' },
-        { src: 'img/web-2.png', label: 'Hayden', description: 'For this landscape architectural portfolio, we wanted to create a playful environment where users can browse through maps. The projects were grouped into four categories that slide in from the side like archive folders on top of them. The website was fully coded, with the help of vibe coding. It involved API map embedding, and since the practice is spread between Cape Town and Amsterdam, we came up with a system of anchor tags to make it easier to jump from one place to the other.', projectId: 'project1' },
-        { src: 'img/web-3.png', label: 'Hayden', description: 'For this landscape architectural portfolio, we wanted to create a playful environment where users can browse through maps. The projects were grouped into four categories that slide in from the side like archive folders on top of them. The website was fully coded, with the help of vibe coding. It involved API map embedding, and since the practice is spread between Cape Town and Amsterdam, we came up with a system of anchor tags to make it easier to jump from one place to the other.', projectId: 'project1' },
-        { src: 'img/web-5.png', label: 'pear_ed', description: 'Website for pear_ed, a botanical art and research project. The site holds their artworks and a map with the cuttings locations, enabling a space that supports exploration, discovery and ongoing documentation.', projectId: 'project2' },
-        { src: 'img/web-5-1.png', label: 'pear_ed', description: 'Website for pear_ed, a botanical art and research project. The site holds their artworks and a map with the cuttings locations, enabling a space that supports exploration, discovery and ongoing documentation.', projectId: 'project2' },
-        { src: 'img/web-6.png', label: 'pear_ed', description: 'Website for pear_ed, a botanical art and research project. The site holds their artworks and a map with the cuttings locations, enabling a space that supports exploration, discovery and ongoing documentation.', projectId: 'project2' },
-        { src: 'img/web-7.png', label: 'pear_ed', description: 'Website for pear_ed, a botanical art and research project. The site holds their artworks and a map with the cuttings locations, enabling a space that supports exploration, discovery and ongoing documentation.', projectId: 'project2' },
-        { src: 'img/web-8.png', label: 'Soul', description: 'Claudia Polo—the woman behind this project—is passionate about how a conscious meal can change the way we relate to food, ourselves, and our environment. As she was growing on social media and writing a book, she asked me to define her brand and create a website that would serve as a portfolio, a recipe book for her followers, and a manifesto.', projectId: 'project3' },
-        { src: 'img/web-9.png', label: 'Soul', description: 'Claudia Polo—the woman behind this project—is passionate about how a conscious meal can change the way we relate to food, ourselves, and our environment. As she was growing on social media and writing a book, she asked me to define her brand and create a website that would serve as a portfolio, a recipe book for her followers, and a manifesto.', projectId: 'project3' },
-        { src: 'img/web-10.png', label: 'Soul', description: 'Claudia Polo—the woman behind this project—is passionate about how a conscious meal can change the way we relate to food, ourselves, and our environment. As she was growing on social media and writing a book, she asked me to define her brand and create a website that would serve as a portfolio, a recipe book for her followers, and a manifesto.', projectId: 'project3' },
-        { src: 'img/web-11.png', label: 'Hambre', description: 'Hambre (Hunger) magazine is a secondary brand of Soul in the Kitchen, a collaborative and online magazine about food-related narratives.', projectId: 'project4' },
-        { src: 'img/web-12.png', label: 'Hambre', description: 'Hambre (Hunger) magazine is a secondary brand of Soul in the Kitchen, a collaborative and online magazine about food-related narratives.', projectId: 'project4' },
-        { src: 'img/web-13.png', label: 'Hambre', description: 'Hambre (Hunger) magazine is a secondary brand of Soul in the Kitchen, a collaborative and online magazine about food-related narratives.', projectId: 'project4' },
-        { src: 'img/web-14.png', label: 'It\'s me!', description: 'Designed and coded this website.' },
-        { src: 'img/web-21.png', label: 'DynOS95', description: 'UI design work for finalist project at ETHGlobal\'s London hackathon, winning Noun\'s best UX/UI implementation and Dynamic\'s best onboarding UX prizes, inspired in Windows 95 aesthetics.', projectId: 'project6' },
-    ],
-    motion: [
-        { src: 'img/motion-1.gif', label: 'Ingennus', description: 'Full animation, concept and storyboard for Ingennus\' sustainability campaign, along with Tropical Studio.', projectId: 'project7' },
-        { src: 'img/motion-2.gif', label: 'Ingennus', description: 'Full animation, concept and storyboard for Ingennus\' sustainability campaign, along with Tropical Studio.', projectId: 'project7' },
-        { src: 'img/motion-3.gif', label: 'Etopia', description: 'Animated and worked in the concept of Etopia\'s moving identity, while working at Tropical Studio.' },
-        { src: 'img/motion-4.gif', label: 'CTF', description: 'Social media assets and video editing for Capture the Flag event.' }
-    ],
-    mixedmedia: [
-        { src: 'img/sun-1.gif', label: 'Risoprint Animation', description: 'Mixed media, frame by frame animation.Developed in a workshop led by Julia Schimautz from DTAN Studio: from Flipbook to animation. Hosted by Onomatopee (Eindhoven).' },
-        { src: 'img/sun-2.gif', label: 'Risoprint Animation', description: 'Mixed media, frame by frame animation.Developed in a workshop led by Julia Schimautz from DTAN Studio: from Flipbook to animation. Hosted by Onomatopee (Eindhoven).' },
-        { src: 'img/sun-3.gif', label: 'Risoprint Animation', description: 'Mixed media, frame by frame animation.Developed in a workshop led by Julia Schimautz from DTAN Studio: from Flipbook to animation. Hosted by Onomatopee (Eindhoven).' },
-        { src: 'img/dog-1.gif', label: 'Window puppy', description: 'Frame by frame animation using Procreate, from a recorded video.' },
-        { src: 'img/dog-2.gif', label: 'Window puppy', description: 'Frame by frame animation using Procreate, from a recorded video.' },
-        { src: 'img/sun-4.png', label: 'Styleframe' }
-    ],
-    pottery: [
-        { src: 'img/chair-0.jpeg', label: 'Jean Prouvé\'s in the making' },
-        { src: 'img/chair-1.jpeg', label: 'Eames LCW & Kneeling chair' },
-        { src: 'img/chair-2.jpeg', label: 'Jean Prouvé\'s Standard chair' },
-        { src: 'img/chair-4.jpeg', label: 'Eames LCW' },
-        { src: 'img/chair-5.jpeg', label: 'Enzo Mari\'s Sedia 1' },
-        { src: 'img/chair-6.jpeg', label: 'Kneeling chair' }
-    ]
-};
-
 class BackgroundManager {
     constructor() {
         this.container = document.getElementById('scrollable-container');
@@ -218,6 +56,7 @@ class BackgroundManager {
             });
         }
         this.webProjectsCarouselCleanups = [];
+        this.galleryClassicAutoplayStop = null;
         this.setupGalleryNav();
         this.init();
         this.scheduleRandomPeek();
@@ -755,6 +594,10 @@ class BackgroundManager {
     }
 
     teardownGalleryInteractions(galleryModal) {
+        if (this.galleryClassicAutoplayStop) {
+            this.galleryClassicAutoplayStop();
+            this.galleryClassicAutoplayStop = null;
+        }
         if (this.galleryKeyHandler) {
             document.removeEventListener('keydown', this.galleryKeyHandler);
             this.galleryKeyHandler = null;
@@ -786,12 +629,39 @@ class BackgroundManager {
     cleanupWebProjectsContent() {
         this.webProjectsCarouselCleanups.forEach((fn) => fn());
         this.webProjectsCarouselCleanups = [];
-        const grid = document.getElementById('web-projects-grid');
-        if (grid) grid.innerHTML = '';
+        PROJECT_LIST_GRID_IDS.forEach((id) => {
+            const g = document.getElementById(id);
+            if (g) g.innerHTML = '';
+        });
     }
 
-    openWebProjectsGallery(galleryModal, startIndex, fromBlock) {
+    /**
+     * @param {object} opts
+     * @param {string} opts.gridId
+     * @param {Array} opts.listProjects - { label, description, slides, projectId? }[]
+     * @param {number} opts.startIndex - flat galleryImages index for focus
+     * @param {boolean} opts.fromBlock
+     * @param {boolean} opts.showVisit
+     * @param {boolean} opts.twoColumn
+     * @param {boolean} opts.verticalCards
+     * @param {boolean} opts.mediaFirst - carousel above copy (e.g. branding / mixed media)
+     * @param {(i: number) => { projectIndex: number, slideIndex: number }} opts.resolveFocus
+     */
+    openProjectListGallery(galleryModal, opts) {
+        const {
+            gridId,
+            listProjects,
+            startIndex,
+            fromBlock,
+            showVisit,
+            twoColumn,
+            verticalCards,
+            mediaFirst,
+            resolveFocus,
+        } = opts;
+
         this.cleanupWebProjectsContent();
+        setVisibleProjectListGrid(gridId);
 
         galleryModal.classList.add('gallery-modal--web-projects');
         galleryModal.classList.remove('motion');
@@ -804,12 +674,20 @@ class BackgroundManager {
             layoutWeb.setAttribute('aria-hidden', 'false');
         }
 
-        const grid = document.getElementById('web-projects-grid');
-        const focus = getWebProjectFocusFromGalleryIndex(startIndex);
+        const grid = document.getElementById(gridId);
+        if (!grid) return;
 
-        webProjects.forEach((proj, pi) => {
+        grid.className =
+            'web-projects-grid' + (twoColumn ? ' web-projects-grid--two-col' : '');
+
+        const focus = resolveFocus(startIndex);
+
+        listProjects.forEach((proj, pi) => {
             const card = document.createElement('article');
-            card.className = 'web-project-card';
+            let cardClass = 'web-project-card';
+            if (verticalCards) cardClass += ' web-project-card--vertical';
+            if (mediaFirst && verticalCards) cardClass += ' web-project-card--media-top';
+            card.className = cardClass;
             card.dataset.projectIndex = String(pi);
 
             const titleEl = document.createElement('h3');
@@ -818,20 +696,33 @@ class BackgroundManager {
             const titleBase = rawTitle.endsWith('.') ? rawTitle.slice(0, -1).trim() : rawTitle;
             titleEl.textContent = `${titleBase.toLowerCase()}.`;
 
-            const projMeta = projects[proj.projectId];
-            const visit = document.createElement('a');
-            visit.href = projMeta.link;
-            visit.target = '_blank';
-            visit.rel = 'noopener';
-            visit.className = 'web-project-visit';
-            visit.textContent = 'Visit site';
+            const copyCol = document.createElement('div');
+            copyCol.className = 'web-project-copy';
+            copyCol.appendChild(titleEl);
 
-            const descEl = document.createElement('p');
-            descEl.className = 'web-project-desc';
-            descEl.textContent = proj.description;
+            const descText = proj.description && String(proj.description).trim();
+            if (descText) {
+                const descEl = document.createElement('p');
+                descEl.className = 'web-project-desc';
+                descEl.textContent = descText;
+                copyCol.appendChild(descEl);
+            }
+
+            if (showVisit && proj.projectId && projects[proj.projectId]) {
+                const meta = projects[proj.projectId];
+                const visit = document.createElement('a');
+                visit.href = meta.link;
+                visit.target = '_blank';
+                visit.rel = 'noopener';
+                visit.className = 'web-project-visit';
+                visit.textContent = meta.label || 'Visit site';
+                copyCol.appendChild(visit);
+            }
 
             const carousel = document.createElement('div');
-            carousel.className = 'web-project-carousel';
+            carousel.className =
+                'web-project-carousel' +
+                (verticalCards ? ' web-project-carousel--vertical' : '');
             carousel.dataset.currentSlide = '0';
 
             const viewport = document.createElement('div');
@@ -863,13 +754,13 @@ class BackgroundManager {
 
             carousel.appendChild(viewport);
 
-            const copyCol = document.createElement('div');
-            copyCol.className = 'web-project-copy';
-            copyCol.appendChild(titleEl);
-            copyCol.appendChild(descEl);
-            copyCol.appendChild(visit);
-            card.appendChild(copyCol);
-            card.appendChild(carousel);
+            if (mediaFirst) {
+                card.appendChild(carousel);
+                card.appendChild(copyCol);
+            } else {
+                card.appendChild(copyCol);
+                card.appendChild(carousel);
+            }
 
             grid.appendChild(card);
 
@@ -940,7 +831,16 @@ class BackgroundManager {
             viewport.addEventListener('touchmove', onTouchMove, { passive: true });
             viewport.addEventListener('touchend', onTouchEnd);
 
+            let stopAutoplay = null;
+            if (nSlides > 1) {
+                stopAutoplay = createMobileCarouselAutoplay(() => {
+                    slideIndex = (slideIndex + 1 + nSlides) % nSlides;
+                    applySlide();
+                });
+            }
+
             this.webProjectsCarouselCleanups.push(() => {
+                if (stopAutoplay) stopAutoplay();
                 viewport.removeEventListener('click', onViewportClick);
                 viewport.removeEventListener('keydown', onViewportKey);
                 viewport.removeEventListener('touchstart', onTouchStart);
@@ -970,8 +870,9 @@ class BackgroundManager {
         galleryModal.style.opacity = '1';
         galleryModal.style.visibility = 'visible';
 
-        gsap.set('.web-project-card', { opacity: 0, y: 12 });
-        gsap.to('.web-project-card', {
+        const cardEls = grid.querySelectorAll('.web-project-card');
+        gsap.set(cardEls, { opacity: 0, y: 12 });
+        gsap.to(cardEls, {
             opacity: 1,
             y: 0,
             duration: 0.95,
@@ -1001,8 +902,68 @@ class BackgroundManager {
         }
     }
 
+    openWebProjectsGallery(galleryModal, startIndex, fromBlock) {
+        this.openProjectListGallery(galleryModal, {
+            gridId: 'web-projects-grid',
+            listProjects: webProjects,
+            startIndex,
+            fromBlock,
+            showVisit: true,
+            twoColumn: false,
+            verticalCards: false,
+            mediaFirst: false,
+            resolveFocus: getWebProjectFocusFromGalleryIndex,
+        });
+    }
+
+    openMotionProjectsGallery(galleryModal, startIndex, fromBlock) {
+        this.openProjectListGallery(galleryModal, {
+            gridId: 'motion-projects-grid',
+            listProjects: motionProjects,
+            startIndex,
+            fromBlock,
+            showVisit: false,
+            twoColumn: false,
+            verticalCards: false,
+            mediaFirst: false,
+            resolveFocus: (i) =>
+                getSlideProjectFocusFromFlatIndex(i, galleryImages.motion, motionProjects),
+        });
+    }
+
+    openBrandingProjectsGallery(galleryModal, startIndex, fromBlock) {
+        this.openProjectListGallery(galleryModal, {
+            gridId: 'branding-projects-grid',
+            listProjects: brandingProjects,
+            startIndex,
+            fromBlock,
+            showVisit: false,
+            twoColumn: true,
+            verticalCards: true,
+            mediaFirst: true,
+            resolveFocus: (i) =>
+                getSlideProjectFocusFromFlatIndex(i, galleryImages.branding, brandingProjects),
+        });
+    }
+
+    openMixedMediaProjectsGallery(galleryModal, startIndex, fromBlock) {
+        this.openProjectListGallery(galleryModal, {
+            gridId: 'mixedmedia-projects-grid',
+            listProjects: mixedMediaProjects,
+            startIndex,
+            fromBlock,
+            showVisit: false,
+            twoColumn: true,
+            verticalCards: true,
+            mediaFirst: true,
+            resolveFocus: (i) =>
+                getSlideProjectFocusFromFlatIndex(i, galleryImages.mixedmedia, mixedMediaProjects),
+        });
+    }
+
     openGallery(category, startIndex = 0, fromBlock = null) {
-        if (category !== 'web') {
+        const projectListCategories = new Set(['web', 'motion', 'branding', 'mixedmedia']);
+        if (!projectListCategories.has(category)) {
             const imgs = galleryImages[category];
             if (!imgs || !imgs.length) return;
         }
@@ -1019,6 +980,18 @@ class BackgroundManager {
         this.syncGalleryNav(category);
         if (category === 'web') {
             this.openWebProjectsGallery(galleryModal, startIndex, fromBlock);
+            return;
+        }
+        if (category === 'motion') {
+            this.openMotionProjectsGallery(galleryModal, startIndex, fromBlock);
+            return;
+        }
+        if (category === 'branding') {
+            this.openBrandingProjectsGallery(galleryModal, startIndex, fromBlock);
+            return;
+        }
+        if (category === 'mixedmedia') {
+            this.openMixedMediaProjectsGallery(galleryModal, startIndex, fromBlock);
             return;
         }
 
@@ -1038,7 +1011,7 @@ class BackgroundManager {
         const descEl = document.querySelector('.gallery-description');
         const visitBtn = document.getElementById('visit-site-btn');
 
-        galleryModal.classList.toggle('motion', category === 'motion');
+        galleryModal.classList.remove('motion');
         thumbsContainer.innerHTML = '';
         visitBtn.style.display = 'none';
         visitBtn.href = '#';
@@ -1179,6 +1152,13 @@ class BackgroundManager {
         galleryModal.style.visibility = 'visible';
 
         updateView(idx);
+
+        if (n > 1) {
+            this.galleryClassicAutoplayStop = createMobileCarouselAutoplay(() => {
+                goToIndex(currentIndex + 1);
+            });
+        }
+
         if (fromBlock) {
             const grad = document.createElement('div');
             grad.className = 'gallery-open-gradient';
@@ -1311,9 +1291,17 @@ class BackgroundManager {
                     break;
                 }
             }
-            const categoryImgs = galleryImages[category];
-            imageIndex = Math.floor(Math.random() * categoryImgs.length);
-            imgData = categoryImgs[imageIndex];
+            const pool =
+                category === 'branding'
+                    ? brandingParticlePickPool
+                    : galleryImages[category].map((img, galleryIndex) => ({
+                          src: img.src,
+                          label: img.label,
+                          galleryIndex,
+                      }));
+            const pick = pool[Math.floor(Math.random() * pool.length)];
+            imageIndex = pick.galleryIndex;
+            imgData = { src: pick.src, label: pick.label };
             attempts++;
         } while (usedSrcs.has(imgData.src) && attempts < 12);
 
@@ -1527,183 +1515,3 @@ class BackgroundManager {
         this.lastScrollY = currentScrollY;
     }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-    const indexText = document.querySelector('.index-text');
-    const galleryModal = document.getElementById('gallery-modal');
-    const nameHighlights = document.querySelectorAll('.name-highlight');
-    const categoryLinks = document.querySelectorAll('.category-link');
-    let backgroundManager = null;
-    let hoveredCategory = null;
-
-    const brandingLink = document.querySelector('.category-link[data-category="branding"]');
-    if (brandingLink) {
-        const brandingText = brandingLink.textContent;
-        brandingLink.textContent = '';
-        brandingText.split('').forEach((char) => {
-            const span = document.createElement('span');
-            span.className = 'branding-letter';
-            span.textContent = char === ' ' ? '\u00A0' : char;
-            span.style.display = 'inline-block';
-            brandingLink.appendChild(span);
-        });
-        const letters = brandingLink.querySelectorAll('.branding-letter');
-        setTimeout(() => {
-            gsap.to(letters, {
-                y: -6,
-                duration: 0.18,
-                stagger: { each: 0.06, from: 'start' },
-                ease: 'power2.out',
-                yoyo: true,
-                repeat: 1,
-            });
-        }, 3000);
-    }
-
-    nameHighlights.forEach((highlight) => {
-        const text = highlight.textContent;
-        highlight.textContent = '';
-        text.split('').forEach((char, index) => {
-            const span = document.createElement('span');
-            span.textContent = char === ' ' ? '\u00A0' : char;
-            span.style.animationDelay = `${index * 0.05}s`;
-            highlight.appendChild(span);
-        });
-    });
-
-    const getInTouchBtn = document.querySelector('.get-in-touch-btn');
-    const bottomBar = document.querySelector('.bottom-bar');
-    if (getInTouchBtn && bottomBar) {
-        const defaultText = getInTouchBtn.dataset.defaultText || 'Contact';
-        const hoverText = getInTouchBtn.dataset.hoverText || 'Email';
-
-        bottomBar.addEventListener('mouseenter', () => {
-            getInTouchBtn.textContent = hoverText;
-        });
-        bottomBar.addEventListener('mouseleave', () => {
-            if (!bottomBar.classList.contains('mobile-expanded')) {
-                getInTouchBtn.textContent = defaultText;
-            }
-        });
-
-        getInTouchBtn.addEventListener('click', (e) => {
-            const isMobile = window.matchMedia('(max-width: 768px)').matches;
-            if (isMobile) {
-                if (!bottomBar.classList.contains('mobile-expanded')) {
-                    e.preventDefault();
-                    bottomBar.classList.add('mobile-expanded');
-                    getInTouchBtn.textContent = hoverText;
-                }
-            }
-        });
-
-        document.addEventListener('click', (e) => {
-            if (
-                window.matchMedia('(max-width: 768px)').matches &&
-                bottomBar.classList.contains('mobile-expanded') &&
-                !bottomBar.contains(e.target)
-            ) {
-                bottomBar.classList.remove('mobile-expanded');
-                getInTouchBtn.textContent = defaultText;
-            }
-        });
-    }
-
-    const nameHoverImage = document.getElementById('name-hover-image');
-    const nameStatic = document.querySelector('.name-highlight-static');
-    if (nameHoverImage && nameStatic) {
-        nameStatic.addEventListener('mouseenter', () => {
-            nameHoverImage.classList.add('visible');
-        });
-        nameStatic.addEventListener('mouseleave', () => {
-            nameHoverImage.classList.remove('visible');
-        });
-        nameStatic.addEventListener('mousemove', (e) => {
-            nameHoverImage.style.left = `${e.clientX + 15}px`;
-            nameHoverImage.style.top = `${e.clientY + 15}px`;
-        });
-    }
-
-    window.addEventListener('load', () => {
-        const initManager = () => {
-            const mgr =
-                document.getElementById('background-container')?.backgroundManager || window.backgroundManager;
-            if (mgr) backgroundManager = mgr;
-        };
-        initManager();
-        setTimeout(initManager, 100);
-    });
-
-    categoryLinks.forEach((link) => {
-        const category = link.getAttribute('data-category');
-        const color = categoryColors[category];
-
-        link.addEventListener('mouseenter', () => {
-            hoveredCategory = category;
-            link.style.color = color;
-            indexText.classList.add('text-dimmed');
-            document.dispatchEvent(new CustomEvent('categoryHoverStart', { detail: { category } }));
-        });
-
-        link.addEventListener('mouseleave', () => {
-            if (hoveredCategory === category) {
-                hoveredCategory = null;
-                link.style.color = '';
-                indexText.classList.remove('text-dimmed');
-                document.dispatchEvent(new CustomEvent('categoryHoverEnd'));
-            }
-        });
-
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const manager = backgroundManager || window.backgroundManager;
-            if (manager && manager.openGallery) {
-                manager.openGallery(category);
-            }
-        });
-    });
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && galleryModal && galleryModal.style.display === 'flex') {
-            const manager = backgroundManager || window.backgroundManager;
-            if (manager && manager.closeGallery) {
-                manager.closeGallery();
-            }
-        }
-    });
-
-    document.addEventListener('highlightCategory', (e) => {
-        const cat = e.detail.category;
-        categoryLinks.forEach((link) => {
-            if (link.getAttribute('data-category') === cat) {
-                link.classList.add('highlighted');
-                link.style.color = categoryColors[cat];
-            }
-        });
-        indexText.classList.add('text-dimmed');
-    });
-
-    document.addEventListener('unhighlightCategory', () => {
-        categoryLinks.forEach((link) => {
-            link.classList.remove('highlighted');
-            link.style.color = '';
-        });
-        indexText.classList.remove('text-dimmed');
-    });
-
-    document.addEventListener('galleryClosed', () => {
-        hoveredCategory = null;
-        document.dispatchEvent(new CustomEvent('categoryHoverEnd'));
-        categoryLinks.forEach((link) => {
-            link.classList.remove('highlighted');
-            link.style.color = '';
-        });
-        indexText.classList.remove('text-dimmed');
-    });
-});
-
-window.addEventListener('load', () => {
-    const manager = new BackgroundManager();
-    document.getElementById('background-container').backgroundManager = manager;
-    window.backgroundManager = manager;
-});

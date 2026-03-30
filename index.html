@@ -15,6 +15,7 @@
         <meta name="twitter:description" content="Graphic designer based in Amsterdam. Branding, websites, motion graphics, mixed media and pottery.">
         <meta name="twitter:image" content="img/og-image.png">
         <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="css/responsive.css">
     </head>
     
     <body>
@@ -73,10 +74,26 @@
             <div class="gallery-layout-web" aria-hidden="true">
                 <div class="web-projects-scroll">
                     <div class="web-projects-grid" id="web-projects-grid"></div>
+                    <div class="web-projects-grid" id="motion-projects-grid" hidden></div>
+                    <div
+                        class="web-projects-grid web-projects-grid--two-col"
+                        id="branding-projects-grid"
+                        hidden
+                    ></div>
+                    <div
+                        class="web-projects-grid web-projects-grid--two-col"
+                        id="mixedmedia-projects-grid"
+                        hidden
+                    ></div>
                 </div>
             </div>
         </div>
     </body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="main.js"></script>
+    <script src="js/constants.js"></script>
+    <script src="js/portfolio-data.js"></script>
+    <script src="js/project-list-grids.js"></script>
+    <script src="js/carousel-autoplay.js"></script>
+    <script src="js/background-manager.js"></script>
+    <script src="js/index-ui.js"></script>
 </html>

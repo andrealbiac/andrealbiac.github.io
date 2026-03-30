@@ -519,6 +519,14 @@ body {
     box-sizing: border-box;
 }
 
+.web-projects-grid--two-col {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(18px, 3vw, 36px);
+    row-gap: clamp(28px, 4vw, 48px);
+    align-items: start;
+}
+
 .web-project-card {
     display: flex;
     flex-direction: row;
@@ -542,7 +550,7 @@ body {
 .web-project-title {
     margin: 0 0 6px;
     font-family: 'Modern Era', sans-serif;
-    font-size: clamp(0.78rem, 1.35vw, 0.95rem);
+    font-size: clamp(1.1rem, 1.95vw, 1.5rem);
     font-weight: 500;
     color: #2D1810;
     letter-spacing: 0.02em;
@@ -576,6 +584,35 @@ body {
     opacity: 1;
 }
 
+.web-project-card--vertical {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    width: 100%;
+    min-width: 0;
+}
+
+.web-project-card--media-top {
+    gap: clamp(10px, 1.5vw, 18px);
+}
+
+.web-project-card--media-top .web-project-title {
+    margin: 0 0 6px;
+}
+
+.web-project-card--media-top .web-project-desc {
+    margin: 0;
+}
+
+.web-project-card--vertical .web-project-copy {
+    flex: none;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    align-items: flex-start;
+    text-align: left;
+}
+
 .web-project-carousel {
     flex: 1 1 0;
     width: auto;
@@ -584,6 +621,35 @@ body {
     height: clamp(300px, 58vh, 620px);
     margin-top: 0;
     align-self: flex-start;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.web-project-carousel * {
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.web-project-carousel--vertical {
+    width: 100%;
+    max-width: 100%;
+    min-height: clamp(420px, 64vh, 780px);
+    height: clamp(420px, 64vh, 780px);
+    align-self: stretch;
+}
+
+.web-project-carousel--vertical .web-carousel-slide {
+    justify-content: flex-start;
+    padding: 0 3% 0 0;
+}
+
+.web-project-carousel--vertical .web-carousel-slide img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    object-position: left center;
 }
 
 /* Right-arrow cursor (encoded #2D1810); hotspot near arrow tip */
@@ -818,276 +884,3 @@ body.gallery-open .auto-scroll-btn {
     transition: opacity 0.3s ease;
 }
 
-/* =============================================================================
-   Media queries
-   ============================================================================= */
-
-@media (hover: hover) {
-    .bottom-bar:hover .portfolio-note {
-        opacity: 1;
-        max-width: 300px;
-        margin-right: 1.25rem;
-    }
-}
-
-@media (hover: hover) and (pointer: fine) {
-    .gallery-thumb:hover {
-        transform: translateX(-4px);
-    }
-
-    .web-carousel-viewport {
-        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M4 10h10M12 6l4 4-4 4' fill='none' stroke='%232D1810' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
-                15 10,
-            pointer;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .bottom-bar.mobile-expanded .portfolio-note {
-        opacity: 1;
-        max-width: 300px;
-        margin-right: 1rem;
-    }
-
-    .gallery-layout-web {
-        padding: 0;
-    }
-
-    .gallery-nav {
-        padding: 14px 78px 72px 16px;
-        background: linear-gradient(
-            to bottom,
-            #F9F2E4 0%,
-            #F9F2E4 30%,
-            rgba(249, 242, 228, 0.88) 50%,
-            rgba(249, 242, 228, 0.26) 78%,
-            rgba(249, 242, 228, 0) 100%
-        );
-    }
-
-    .gallery-nav-inner {
-        font-size: 16px;
-        line-height: 1.4;
-    }
-
-    .gallery-header {
-        max-width: min(40rem, calc(100% - 32px));
-        padding: 12px 16px calc(20px + env(safe-area-inset-bottom, 0px));
-    }
-
-    .web-projects-scroll {
-        padding: 98px 18px 72px;
-    }
-
-    .web-projects-grid {
-        gap: 32px;
-        max-width: none;
-        padding: 24px 0 0;
-    }
-
-    .web-project-card {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 20px;
-    }
-
-    .web-project-copy {
-        flex: none;
-        max-width: none;
-        min-width: 0;
-        width: 100%;
-    }
-
-    .web-project-desc {
-        margin-bottom: 0;
-    }
-
-    .web-project-carousel {
-        flex: none;
-        width: 100%;
-    }
-
-    .web-carousel-slide {
-        justify-content: center;
-    }
-
-    .web-carousel-slide img {
-        object-position: center top;
-    }
-
-    .gallery-close-btn {
-        top: 15px;
-        right: 15px;
-        padding: 8px;
-    }
-
-    .index-text {
-        padding: 0 28px;
-        box-sizing: border-box;
-    }
-
-    .index-text p {
-        width: 85%;
-        font-size: 19px;
-        line-height: 1.6;
-        padding: 0 56px;
-    }
-
-    .bottom-bar {
-        bottom: 30px;
-        gap: 1rem;
-    }
-
-    .get-in-touch-btn {
-        font-size: 14px;
-    }
-
-    .portfolio-note {
-        font-size: 15px;
-    }
-
-    .auto-scroll-btn {
-        top: 15px;
-        right: 15px;
-        padding: 8px;
-    }
-
-    .sun-icon {
-        width: 44px;
-        height: 44px;
-    }
-
-    .gallery-body {
-        flex-direction: column;
-        padding: calc(110px + 8vh) 16px 16px;
-        justify-content: flex-start;
-    }
-
-    .gallery-center-image,
-    .gallery-center-image img {
-        max-height: 56vh;
-    }
-
-    .gallery-modal.motion .gallery-center-image img,
-    .gallery-modal.motion .gallery-thumb img {
-        max-height: 40vh;
-    }
-
-    .gallery-thumbs {
-        flex-direction: row;
-        flex-wrap: nowrap;
-        max-height: 120px;
-        overflow-x: auto;
-        overflow-y: hidden;
-        width: 100%;
-        justify-content: center;
-        align-self: center;
-        align-items: flex-end;
-        align-content: flex-end;
-        margin-top: auto;
-        max-width: 100%;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .gallery-thumb {
-        max-width: 70px;
-    }
-
-    .gallery-thumb img {
-        max-width: 70px;
-        max-height: 60px;
-    }
-
-    .particle-hover-image {
-        max-width: 180px;
-        max-height: 180px;
-    }
-
-    .particle-hover-image[src*="brand-15"] {
-        max-width: 130px;
-        max-height: 130px;
-    }
-
-    .gallery-header {
-        max-width: 70%;
-    }
-
-    .gallery-title {
-        font-size: 24px;
-    }
-
-    .gallery-description {
-        font-size: 18px;
-        margin-top: 8px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .index-text {
-        padding: 0 24px;
-        box-sizing: border-box;
-    }
-
-    .index-text p {
-        width: 90%;
-        font-size: 18px;
-        padding: 0 48px;
-    }
-
-    .bottom-bar {
-        bottom: 25px;
-        gap: 0.75rem;
-    }
-
-    .get-in-touch-btn {
-        font-size: 13px;
-    }
-
-    .portfolio-note {
-        font-size: 14px;
-    }
-
-    .auto-scroll-btn {
-        top: 12px;
-        right: 12px;
-        padding: 6px;
-    }
-
-    .gallery-close-btn {
-        top: 12px;
-        right: 12px;
-        padding: 6px;
-    }
-
-    .sun-icon {
-        width: 36px;
-        height: 36px;
-    }
-
-    .gallery-thumb img {
-        max-width: 60px;
-        max-height: 50px;
-    }
-
-    .particle-hover-image {
-        max-width: 158px;
-        max-height: 158px;
-    }
-
-    .particle-hover-image[src*="brand-15"] {
-        max-width: 114px;
-        max-height: 114px;
-    }
-
-    .gallery-header {
-        max-width: 85%;
-    }
-
-    .gallery-title {
-        font-size: 22px;
-    }
-
-    .gallery-description {
-        font-size: 17px;
-    }
-}
