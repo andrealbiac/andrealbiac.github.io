@@ -210,7 +210,6 @@ body {
 
 .gallery-close-btn .sun-icon {
     display: block;
-    transition: transform 0.35s ease;
 }
 
 .gallery-nav {
@@ -220,7 +219,7 @@ body {
     right: 0;
     z-index: 1012;
     pointer-events: none;
-    padding: 26px 96px 70px 24px;
+    padding: 18px 96px 78px 24px;
     box-sizing: border-box;
     background: linear-gradient(
         to bottom,
@@ -537,55 +536,62 @@ body {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-}
-
-.web-project-header {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 10px;
-    width: 100%;
-    min-width: 0;
-    margin-bottom: 14px;
+    gap: 0;
 }
 
 .web-project-title {
-    margin: 0;
+    margin: 0 0 6px;
     font-family: 'Modern Era', sans-serif;
-    font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+    font-size: clamp(0.78rem, 1.35vw, 0.95rem);
     font-weight: 500;
     color: #2D1810;
-    letter-spacing: 0.01em;
-    line-height: 1.15;
-    flex: 1;
+    letter-spacing: 0.02em;
+    line-height: 1.25;
+    text-transform: lowercase;
+    opacity: 0.42;
+    transition: opacity 0.35s ease;
     min-width: 0;
 }
 
+.web-project-card:hover .web-project-title,
+.web-project-card:focus-within .web-project-title {
+    opacity: 1;
+}
+
 .web-project-desc {
-    margin: 0;
+    margin: 0 0 12px;
     font-family: 'Modern Era', sans-serif;
     font-size: 15px;
     font-weight: 300;
     line-height: 1.45;
     color: #2D1810;
-    opacity: 0.88;
+    opacity: 0.5;
     max-width: none;
     min-height: 0;
+    transition: opacity 0.35s ease;
+}
+
+.web-project-card:hover .web-project-desc,
+.web-project-card:focus-within .web-project-desc {
+    opacity: 1;
 }
 
 .web-project-carousel {
     flex: 1 1 0;
     width: auto;
     min-width: 0;
-    min-height: 0;
+    min-height: clamp(300px, 58vh, 620px);
+    height: clamp(300px, 58vh, 620px);
     margin-top: 0;
+    align-self: flex-start;
 }
 
 /* Right-arrow cursor (encoded #2D1810); hotspot near arrow tip */
 .web-carousel-viewport {
+    position: relative;
     overflow: hidden;
     width: 100%;
+    height: 100%;
     background: transparent;
     touch-action: manipulation;
 }
@@ -595,93 +601,92 @@ body {
     outline: none;
 }
 
-.web-carousel-track {
-    display: flex;
-    will-change: transform;
+.web-carousel-stack {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
 .web-carousel-slide {
-    flex: 0 0 100%;
-    min-width: 0;
+    position: absolute;
+    inset: 0;
     box-sizing: border-box;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: flex-end;
+    margin: 0;
+    padding: 0 2%;
+    visibility: hidden;
+    opacity: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.web-carousel-slide.is-active {
+    visibility: visible;
+    opacity: 1;
+    z-index: 1;
+    pointer-events: auto;
 }
 
 .web-carousel-slide img {
     display: block;
-    width: 100%;
+    width: auto;
     max-width: 100%;
+    max-height: 100%;
     height: auto;
     object-fit: contain;
-    object-position: right top;
+    object-position: right center;
     -webkit-user-drag: none;
     user-drag: none;
     pointer-events: none;
+    transition: filter 0.4s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    @media (prefers-reduced-motion: no-preference) {
+        .web-project-card .web-carousel-slide img {
+            filter: blur(2px);
+        }
+
+        .web-project-card:hover .web-carousel-slide img,
+        .web-project-card:focus-within .web-carousel-slide img {
+            filter: none;
+        }
+    }
 }
 
 .web-project-visit {
-    display: inline-flex;
-    flex-direction: row;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: flex-end;
+    display: inline;
     align-self: flex-start;
-    width: auto;
-    max-width: max-content;
-    margin-top: 2px;
-    padding: 5px 12px;
-    border-radius: 999px;
+    width: fit-content;
+    margin: 0;
+    padding: 0;
     font-family: 'Modern Era', sans-serif;
     font-size: 15px;
     font-weight: 300;
     line-height: 1.45;
     color: #2d1810;
-    background-color: transparent;
-    border: 1px solid #2d1810;
-    text-decoration: none;
+    background: none;
+    border: none;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
     cursor: pointer;
-    white-space: nowrap;
+    opacity: 0.5;
+    transition: opacity 0.25s ease;
     box-sizing: border-box;
 }
 
-.web-project-visit-label {
-    display: inline-block;
-    overflow: hidden;
-    vertical-align: middle;
-    max-width: 0;
-    opacity: 0;
-    margin-right: 0;
-}
-
-.web-project-visit-arrow {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    width: 22px;
-    height: 22px;
-    color: inherit;
-}
-
-.web-project-visit-arrow svg {
-    display: block;
-    width: 22px;
-    height: 22px;
+.web-project-card:hover .web-project-visit,
+.web-project-card:focus-within .web-project-visit,
+.web-project-visit:hover,
+.web-project-visit:focus-visible {
+    opacity: 1;
 }
 
 .web-project-visit:focus-visible {
     outline: 1px solid #2d1810;
     outline-offset: 3px;
-}
-
-@media (hover: none), (pointer: coarse) {
-    .web-project-visit-label {
-        max-width: 200px;
-        opacity: 1;
-        margin-right: 8px;
-    }
 }
 
 
@@ -778,6 +783,9 @@ body {
     width: 52px;
     height: 52px;
     transform-origin: center;
+}
+
+.auto-scroll-btn .sun-icon {
     will-change: transform;
 }
 
@@ -823,17 +831,13 @@ body.gallery-open .auto-scroll-btn {
 }
 
 @media (hover: hover) and (pointer: fine) {
-    .gallery-close-btn:hover .sun-icon {
-        transform: rotate(28deg) scale(1.06);
-    }
-
     .gallery-thumb:hover {
         transform: translateX(-4px);
     }
 
     .web-carousel-viewport {
-        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cpath d='M6 14h14M16 8l6 6-6 6' fill='none' stroke='%232D1810' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
-                22 14,
+        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M4 10h10M12 6l4 4-4 4' fill='none' stroke='%232D1810' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+                15 10,
             pointer;
     }
 }
@@ -850,7 +854,7 @@ body.gallery-open .auto-scroll-btn {
     }
 
     .gallery-nav {
-        padding: 22px 78px 64px 16px;
+        padding: 14px 78px 72px 16px;
         background: linear-gradient(
             to bottom,
             #F9F2E4 0%,
